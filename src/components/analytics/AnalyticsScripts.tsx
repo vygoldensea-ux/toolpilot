@@ -1,8 +1,4 @@
 import Script from "next/script";
-import { Suspense } from "react";
-import { GaPageViewTracker } from "@/components/analytics/GaPageViewTracker";
-
-const gaMeasurementId = "G-FEHKDV6VYG";
 const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
@@ -10,21 +6,6 @@ const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.postho
 export function AnalyticsScripts() {
   return (
     <>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-        strategy="afterInteractive"
-      />
-      <Script id="ga-init" strategy="afterInteractive">
-        {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-window.gtag = gtag;
-gtag('js', new Date());
-gtag('config', '${gaMeasurementId}', { send_page_view: false });`}
-      </Script>
-      <Suspense fallback={null}>
-        <GaPageViewTracker measurementId={gaMeasurementId} />
-      </Suspense>
-
       {plausibleDomain ? (
         <Script
           defer
