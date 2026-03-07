@@ -1,0 +1,6 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0F172A"/>
+  <rect x="72" y="72" width="1056" height="486" rx="24" fill="#111827" stroke="#334155"/>
+  <text x="130" y="300" fill="#E2E8F0" font-size="82" font-family="Arial, sans-serif" font-weight="700">ToolPilot</text>
+  <text x="132" y="370" fill="#94A3B8" font-size="34" font-family="Arial, sans-serif">Fast developer utilities on toolpilot.xyz</text>
+</svg>
