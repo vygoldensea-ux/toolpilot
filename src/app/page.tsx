@@ -53,21 +53,28 @@ export default function HomePage() {
               <p className="text-sm font-medium text-slate-900">JSON Formatter preview</p>
               <div className="mt-4 space-y-3">
                 <label className="block text-xs text-slate-500">Input</label>
-                <div className="rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-6 text-slate-600">
+                <Link
+                  href="/json-formatter"
+                  className="block rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-6 text-slate-600 transition hover:border-slate-300"
+                >
                   {'{"service":"toolpilot","quality":"high"}'}
-                </div>
+                </Link>
               </div>
               <div className="mt-4 space-y-3">
                 <label className="block text-xs text-slate-500">Output</label>
-                <div className="rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-6 text-slate-600">
+                <Link
+                  href="/json-formatter"
+                  className="block rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-6 text-slate-600 transition hover:border-slate-300"
+                >
                   {`{\n  "service": "toolpilot",\n  "quality": "high"\n}`}
-                </div>
+                </Link>
               </div>
               <div className="mt-5">
-                <button type="button" className="tp-button-primary w-full" disabled>
+                <Link href="/json-formatter" className="tp-button-primary w-full">
                   Format JSON
-                </button>
+                </Link>
               </div>
+              <p className="mt-3 text-xs text-slate-500">Open the tool page to paste data and run formatting.</p>
             </aside>
           </div>
         </section>
