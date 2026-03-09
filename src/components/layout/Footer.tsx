@@ -15,7 +15,16 @@ export function Footer() {
     <footer className="mt-24 border-t border-slate-200 bg-white">
       <Container>
         <div className="grid gap-8 py-10 text-sm text-slate-600 md:grid-cols-[1fr_auto_auto] md:items-start">
-          <p>© {new Date().getFullYear()} {siteConfig.name}. Developer tools, built with clarity.</p>
+          <div className="space-y-2">
+            <p>© {new Date().getFullYear()} {siteConfig.name}. Developer tools, built with clarity.</p>
+            <p>
+              Powered by{" "}
+              <a href="https://goldenseastudios.com" className="text-slate-700 transition hover:text-slate-900">
+                Goldensea Studios
+              </a>
+              .
+            </p>
+          </div>
 
           <div className="flex flex-wrap items-center gap-5">
             <Link href="/privacy-policy" className="transition hover:text-slate-900">

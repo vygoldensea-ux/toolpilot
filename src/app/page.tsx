@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ToolCard } from "@/components/ui/ToolCard";
 import { Container } from "@/components/ui/Container";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { seoLandingTools } from "@/config/seo-landing-tools";
 import { liveToolRegistry, plannedToolRegistry, siteConfig, toolRegistry } from "@/config/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { buildStructuredData } from "@/lib/seo/structured-data";
@@ -87,6 +88,24 @@ export default function HomePage() {
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {featuredTools.map((tool) => (
               <ToolCard key={tool.slug} tool={tool} />
+            ))}
+          </div>
+        </section>
+
+        <section className="py-8">
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Popular searches</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
+            Quickly jump to high-intent developer utility pages.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {seoLandingTools.map((tool) => (
+              <Link
+                key={tool.slug}
+                href={`/${tool.slug}`}
+                className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 transition hover:border-slate-300 hover:text-slate-900"
+              >
+                {tool.keyword}
+              </Link>
             ))}
           </div>
         </section>

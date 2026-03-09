@@ -17,8 +17,8 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "timestamp-converter",
     keyword: "timestamp converter",
     name: "Timestamp Converter",
-    title: "Timestamp Converter | Unix Time to Date",
-    description: "Convert Unix timestamp to readable date and convert date back to Unix time.",
+    title: "Timestamp Converter - Unix Time to Date (Free Online)",
+    description: "Convert Unix timestamp to readable date and convert date back to Unix time in one click.",
     intro:
       "Timestamp Converter helps developers convert Unix timestamps into readable date time values and convert readable dates back to Unix seconds or milliseconds. This is useful for logs, API payloads, monitoring events, and debugging timezone-sensitive systems.",
     howToUse: [
@@ -39,8 +39,8 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "url-encode-decode",
     keyword: "url encode decode",
     name: "URL Encode / Decode",
-    title: "URL Encode Decode Tool",
-    description: "Encode and decode URL strings for query params, callbacks, and web debugging.",
+    title: "URL Encode Decode Tool (Free Online)",
+    description: "Encode and decode URL strings for query params, callbacks, and web debugging quickly.",
     intro:
       "URL Encode Decode tool giúp bạn chuyển chuỗi thường thành định dạng an toàn cho URL và decode ngược lại. Đây là thao tác rất phổ biến khi làm query string, redirect callback, OAuth state, và test API endpoint có ký tự đặc biệt.",
     howToUse: [
@@ -61,7 +61,7 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "hash-generator",
     keyword: "hash generator",
     name: "Hash Generator",
-    title: "Hash Generator (MD5, SHA1, SHA256)",
+    title: "Hash Generator (MD5, SHA1, SHA256) - Free Online",
     description: "Generate MD5, SHA1, and SHA256 hashes from text for quick verification.",
     intro:
       "Hash Generator dùng để tạo checksum nhanh từ text input bằng các thuật toán phổ biến như MD5, SHA-1, và SHA-256. Tool này hữu ích khi bạn cần verify dữ liệu, kiểm tra integrity, hoặc tạo test vector cho API/security workflow.",
@@ -83,7 +83,7 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "regex-tester",
     keyword: "regex tester",
     name: "Regex Tester",
-    title: "Regex Tester Online",
+    title: "Regex Tester Online - Test Patterns Fast",
     description: "Test regular expressions with live matches, flags, and capture groups.",
     intro:
       "Regex Tester giúp bạn kiểm tra pattern ngay lập tức trên sample text để xem match, capture group, và ảnh hưởng của các flags. Đây là tool quan trọng cho validation form, parsing log, extraction data, và rule-based filtering.",
@@ -105,7 +105,7 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "json-to-csv",
     keyword: "json to csv converter",
     name: "JSON to CSV Converter",
-    title: "JSON to CSV Converter",
+    title: "JSON to CSV Converter - Free Online",
     description: "Convert JSON arrays to CSV format for spreadsheets and data export workflows.",
     intro:
       "JSON to CSV Converter dành cho dev và analyst cần chuyển mảng JSON sang CSV để mở bằng Excel hoặc Google Sheets. Tool này giảm thời gian viết script thủ công khi cần export dữ liệu API cho nghiệp vụ hoặc báo cáo.",
@@ -123,7 +123,7 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "csv-to-json",
     keyword: "csv to json converter",
     name: "CSV to JSON Converter",
-    title: "CSV to JSON Converter",
+    title: "CSV to JSON Converter - Free Online",
     description: "Convert CSV rows into JSON objects for APIs, ETL, and app development.",
     intro:
       "CSV to JSON Converter giúp bạn đưa dữ liệu bảng vào luồng phát triển API nhanh hơn. Thay vì parse thủ công, bạn chỉ cần paste CSV và nhận JSON output để test endpoint, import data, hoặc seed database.",
@@ -141,7 +141,7 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "yaml-to-json",
     keyword: "yaml to json",
     name: "YAML to JSON",
-    title: "YAML to JSON Converter",
+    title: "YAML to JSON Converter - Free Online",
     description: "Convert YAML to valid JSON for API configs, infrastructure, and tooling.",
     intro:
       "YAML to JSON Converter phù hợp khi bạn làm với config files và cần đổi nhanh sang JSON để tích hợp với toolchain hoặc API validator. Việc convert chuẩn giúp giảm lỗi indent YAML trước khi deploy.",
@@ -159,7 +159,7 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "json-to-yaml",
     keyword: "json to yaml",
     name: "JSON to YAML",
-    title: "JSON to YAML Converter",
+    title: "JSON to YAML Converter - Free Online",
     description: "Convert JSON to YAML format for deployment files and human-readable config.",
     intro:
       "JSON to YAML Converter giúp chuyển JSON payload sang YAML readable để dùng trong CI/CD, docker compose, hoặc config app. Với devops workflow, conversion nhanh và chính xác giúp tránh lỗi syntax khi rollout.",
@@ -177,7 +177,7 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "sql-formatter",
     keyword: "sql formatter",
     name: "SQL Formatter",
-    title: "SQL Formatter Online",
+    title: "SQL Formatter Online - Beautify SQL Quickly",
     description: "Format SQL queries for readability with clear indentation and keyword styling.",
     intro:
       "SQL Formatter giúp chuẩn hóa câu query dài để dễ đọc, dễ review và giảm lỗi logic khi debug. Tool này phù hợp cho backend dev, data analyst, và mọi workflow phải xử lý query phức tạp nhiều joins/subqueries.",
@@ -195,7 +195,7 @@ export const seoLandingTools: SeoLandingTool[] = [
     slug: "html-entity-encode-decode",
     keyword: "html entity encode decode",
     name: "HTML Entity Encode / Decode",
-    title: "HTML Entity Encode Decode Tool",
+    title: "HTML Entity Encode Decode Tool - Free Online",
     description: "Encode and decode HTML entities for safe rendering of special characters.",
     intro:
       "HTML Entity Encode Decode tool giúp chuyển ký tự đặc biệt thành entity an toàn cho HTML hoặc decode lại thành text thường. Điều này hữu ích khi bạn hiển thị user content, làm email templates, hoặc debug dữ liệu escaping trên frontend.",
