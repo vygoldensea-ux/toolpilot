@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { seoLandingTools } from "@/config/seo-landing-tools";
 import { siteConfig, tools } from "@/config/site";
 import { buildMetadata } from "@/lib/seo/metadata";
 
@@ -64,6 +65,13 @@ export default function HtmlSitemapPage() {
           <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Tool pages</h2>
           <ul className="mt-4 space-y-2 text-sm text-slate-700">
             {tools.map((tool) => (
+              <li key={tool.slug}>
+                <Link href={`/${tool.slug}`} className="hover:text-slate-900">
+                  {tool.name}
+                </Link>
+              </li>
+            ))}
+            {seoLandingTools.map((tool) => (
               <li key={tool.slug}>
                 <Link href={`/${tool.slug}`} className="hover:text-slate-900">
                   {tool.name}

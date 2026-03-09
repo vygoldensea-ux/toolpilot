@@ -1,18 +1,16 @@
-import { PlannedToolPage } from "@/components/tool/PlannedToolPage";
+import { SeoLandingToolPage } from "@/components/tool/SeoLandingToolPage";
+import { getSeoLandingToolOrThrow } from "@/config/seo-landing-tools";
 import { buildMetadata } from "@/lib/seo/metadata";
 
+const tool = getSeoLandingToolOrThrow("regex-tester");
+
 export const metadata = buildMetadata({
-  title: "Regex Tester",
-  description: "Regex tester route prepared for upcoming ToolPilot launch phases.",
-  path: "/regex-tester",
-  keywords: ["regex tester", "regular expression tester"]
+  title: tool.title,
+  description: tool.description,
+  path: `/${tool.slug}`,
+  keywords: [tool.keyword]
 });
 
 export default function RegexTesterPage() {
-  return (
-    <PlannedToolPage
-      title="Regex Tester"
-      description="Test regular expressions with instant match feedback and capture group visibility."
-    />
-  );
+  return <SeoLandingToolPage tool={tool} />;
 }

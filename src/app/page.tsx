@@ -142,17 +142,19 @@ export default function HomePage() {
           </ul>
         </section>
 
-        <section className="pb-12">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Planned tools</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-            These routes are already prepared and ready for implementation.
-          </p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {plannedToolRegistry.map((tool) => (
-              <ToolCard key={tool.slug} tool={tool} />
-            ))}
-          </div>
-        </section>
+        {plannedToolRegistry.length ? (
+          <section className="pb-12">
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Planned tools</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
+              These routes are already prepared and ready for implementation.
+            </p>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {plannedToolRegistry.map((tool) => (
+                <ToolCard key={tool.slug} tool={tool} />
+              ))}
+            </div>
+          </section>
+        ) : null}
       </Container>
     </>
   );

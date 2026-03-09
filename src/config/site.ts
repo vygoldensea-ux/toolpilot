@@ -309,28 +309,70 @@ const plannedTools: ToolRegistryItem[] = [
     name: "Timestamp Converter",
     summary: "Convert Unix timestamps to human-readable dates and back.",
     keywords: ["timestamp converter", "unix timestamp converter"],
-    status: "planned"
+    status: "live"
   },
   {
     slug: "url-encode-decode",
     name: "URL Encode / Decode",
     summary: "Encode and decode URL-safe strings for query parameters and APIs.",
     keywords: ["url encode decode", "url encoder decoder"],
-    status: "planned"
+    status: "live"
   },
   {
     slug: "hash-generator",
     name: "Hash Generator",
     summary: "Generate hashes like MD5, SHA-1, and SHA-256 for test and verification workflows.",
     keywords: ["hash generator", "sha256 generator"],
-    status: "planned"
+    status: "live"
   },
   {
     slug: "regex-tester",
     name: "Regex Tester",
     summary: "Test regular expressions with live match feedback and capture group inspection.",
     keywords: ["regex tester", "regular expression tester"],
-    status: "planned"
+    status: "live"
+  },
+  {
+    slug: "json-to-csv",
+    name: "JSON to CSV Converter",
+    summary: "Convert JSON arrays to CSV for spreadsheets and export workflows.",
+    keywords: ["json to csv converter"],
+    status: "live"
+  },
+  {
+    slug: "csv-to-json",
+    name: "CSV to JSON Converter",
+    summary: "Convert CSV data into JSON objects for APIs and application workflows.",
+    keywords: ["csv to json converter"],
+    status: "live"
+  },
+  {
+    slug: "yaml-to-json",
+    name: "YAML to JSON",
+    summary: "Convert YAML config to valid JSON quickly.",
+    keywords: ["yaml to json"],
+    status: "live"
+  },
+  {
+    slug: "json-to-yaml",
+    name: "JSON to YAML",
+    summary: "Convert JSON into YAML for readable config files.",
+    keywords: ["json to yaml"],
+    status: "live"
+  },
+  {
+    slug: "sql-formatter",
+    name: "SQL Formatter",
+    summary: "Format SQL queries for readability and review.",
+    keywords: ["sql formatter"],
+    status: "live"
+  },
+  {
+    slug: "html-entity-encode-decode",
+    name: "HTML Entity Encode / Decode",
+    summary: "Encode and decode HTML entities for safe rendering.",
+    keywords: ["html entity encode decode"],
+    status: "live"
   }
 ];
 

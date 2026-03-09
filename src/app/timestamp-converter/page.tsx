@@ -1,18 +1,16 @@
-import { PlannedToolPage } from "@/components/tool/PlannedToolPage";
+import { SeoLandingToolPage } from "@/components/tool/SeoLandingToolPage";
+import { getSeoLandingToolOrThrow } from "@/config/seo-landing-tools";
 import { buildMetadata } from "@/lib/seo/metadata";
 
+const tool = getSeoLandingToolOrThrow("timestamp-converter");
+
 export const metadata = buildMetadata({
-  title: "Timestamp Converter",
-  description: "Timestamp converter route prepared for upcoming ToolPilot launch phases.",
-  path: "/timestamp-converter",
-  keywords: ["timestamp converter", "unix timestamp converter"]
+  title: tool.title,
+  description: tool.description,
+  path: `/${tool.slug}`,
+  keywords: [tool.keyword]
 });
 
 export default function TimestampConverterPage() {
-  return (
-    <PlannedToolPage
-      title="Timestamp Converter"
-      description="Convert Unix timestamps to readable dates and convert readable dates back to Unix time."
-    />
-  );
+  return <SeoLandingToolPage tool={tool} />;
 }

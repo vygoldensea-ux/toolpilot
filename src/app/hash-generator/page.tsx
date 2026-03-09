@@ -1,18 +1,16 @@
-import { PlannedToolPage } from "@/components/tool/PlannedToolPage";
+import { SeoLandingToolPage } from "@/components/tool/SeoLandingToolPage";
+import { getSeoLandingToolOrThrow } from "@/config/seo-landing-tools";
 import { buildMetadata } from "@/lib/seo/metadata";
 
+const tool = getSeoLandingToolOrThrow("hash-generator");
+
 export const metadata = buildMetadata({
-  title: "Hash Generator",
-  description: "Hash generator route prepared for upcoming ToolPilot launch phases.",
-  path: "/hash-generator",
-  keywords: ["hash generator", "sha256 generator"]
+  title: tool.title,
+  description: tool.description,
+  path: `/${tool.slug}`,
+  keywords: [tool.keyword]
 });
 
 export default function HashGeneratorPage() {
-  return (
-    <PlannedToolPage
-      title="Hash Generator"
-      description="Generate MD5, SHA-1, and SHA-256 hashes for development, testing, and verification."
-    />
-  );
+  return <SeoLandingToolPage tool={tool} />;
 }
