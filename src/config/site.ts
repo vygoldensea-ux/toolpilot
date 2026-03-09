@@ -38,8 +38,8 @@ export type ToolRegistryItem = {
 
 export const siteConfig = {
   name: "ToolPilot",
-  domain: "toolpilot.xyz",
-  baseUrl: "https://toolpilot.xyz",
+  domain: "www.toolpilot.xyz",
+  baseUrl: "https://www.toolpilot.xyz",
   description:
     "ToolPilot is a collection of online developer tools for formatting, encoding, decoding, and automation workflows.",
   social: {
