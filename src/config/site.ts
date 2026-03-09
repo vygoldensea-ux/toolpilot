@@ -99,10 +99,10 @@ export const tools: ToolDefinition[] = [
       }
     ],
     keywords: ["json formatter", "json beautifier", "json validator"],
-    seoTitle: "JSON Formatter, Beautifier and Validator",
+    seoTitle: "JSON Formatter Online",
     seoDescription:
       "Free JSON formatter, JSON beautifier, and JSON validator for developers. Format, minify, validate, and copy JSON quickly.",
-    relatedSlugs: ["jwt-decoder", "base64-tools", "uuid-generator"]
+    relatedSlugs: ["json-to-csv", "csv-to-json", "yaml-to-json"]
   },
   {
     slug: "base64-tools",
@@ -149,10 +149,10 @@ export const tools: ToolDefinition[] = [
       }
     ],
     keywords: ["base64 encode", "base64 decode", "base64 encoder decoder"],
-    seoTitle: "Base64 Encode and Decode Tool",
+    seoTitle: "Base64 Encode Decode Online",
     seoDescription:
       "Fast Base64 encode and Base64 decode utility for developers. Convert text, handle errors, and copy output in one page.",
-    relatedSlugs: ["json-formatter", "jwt-decoder", "cron-generator"]
+    relatedSlugs: ["url-encode-decode", "html-entity-encode-decode", "jwt-decoder"]
   },
   {
     slug: "uuid-generator",
@@ -196,7 +196,7 @@ export const tools: ToolDefinition[] = [
       }
     ],
     keywords: ["uuid generator", "uuid v4 generator"],
-    seoTitle: "UUID Generator (UUID v4)",
+    seoTitle: "UUID Generator Online",
     seoDescription:
       "Generate UUID v4 values online. Create 1, 5, or 10 UUIDs, copy individual IDs, or copy all at once.",
     relatedSlugs: ["json-formatter", "base64-tools", "jwt-decoder"]
@@ -245,10 +245,10 @@ export const tools: ToolDefinition[] = [
       }
     ],
     keywords: ["jwt decoder", "decode jwt"],
-    seoTitle: "JWT Decoder - Decode JWT Tokens",
+    seoTitle: "JWT Decoder Online",
     seoDescription:
       "Decode JWT tokens online and inspect header and payload claims. Copy parsed JSON and troubleshoot auth flows quickly.",
-    relatedSlugs: ["json-formatter", "base64-tools", "uuid-generator"]
+    relatedSlugs: ["uuid-generator", "hash-generator", "base64-tools"]
   },
   {
     slug: "cron-generator",
@@ -294,7 +294,7 @@ export const tools: ToolDefinition[] = [
       }
     ],
     keywords: ["cron generator", "cron expression generator"],
-    seoTitle: "Cron Generator and Cron Expression Generator",
+    seoTitle: "Cron Expression Generator",
     seoDescription:
       "Generate cron expressions for common schedules. Use this cron expression generator to create and copy reliable job timing rules.",
     relatedSlugs: ["json-formatter", "uuid-generator", "base64-tools"]

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { StructuredData } from "@/components/seo/StructuredData";
-import { tools } from "@/config/site";
+import { toolRegistryBySlug } from "@/config/site";
 import { buildFaqStructuredData, buildStructuredData } from "@/lib/seo/structured-data";
 import { getToolOrThrow } from "@/lib/tools";
 import { ToolPageLayout } from "./ToolPageLayout";
@@ -14,8 +14,9 @@ export function ToolRoutePage({ slug, children }: ToolRoutePageProps) {
   const tool = getToolOrThrow(slug);
 
   const relatedTools = tool.relatedSlugs
-    .map((relatedSlug) => tools.find((item) => item.slug === relatedSlug))
-    .filter((item): item is (typeof tools)[number] => Boolean(item));
+    .map((relatedSlug) => toolRegistryBySlug.get(relatedSlug))
+    .filter((item): item is NonNullable<typeof item> => Boolean(item))
+    .map((item) => ({ slug: item.slug, name: item.name }));
 
   const webPageSchema = buildStructuredData({
     type: "WebPage",

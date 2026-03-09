@@ -1,12 +1,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { ToolDefinition } from "@/config/site";
+import type { ToolDefinition, ToolRegistryItem } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 
 type ToolPageLayoutProps = {
   tool: ToolDefinition;
   children: ReactNode;
-  relatedTools: ToolDefinition[];
+  relatedTools: Array<Pick<ToolRegistryItem, "slug" | "name">>;
 };
 
 export function ToolPageLayout({ tool, children, relatedTools }: ToolPageLayoutProps) {
@@ -21,6 +21,11 @@ export function ToolPageLayout({ tool, children, relatedTools }: ToolPageLayoutP
 
         <section aria-label="Tool interface" className="tp-panel mt-10 p-6 sm:p-8">
           {children}
+        </section>
+
+        <section className="mt-14">
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">What is this tool?</h2>
+          <p className="mt-4 text-sm leading-8 text-slate-700">{tool.intro}</p>
         </section>
 
         <section className="mt-14">
@@ -55,7 +60,8 @@ export function ToolPageLayout({ tool, children, relatedTools }: ToolPageLayoutP
         </section>
 
         <section className="mt-14">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">{tool.guideHeading}</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Why use it?</h2>
+          <p className="mt-3 text-sm font-medium text-slate-800">{tool.guideHeading}</p>
           <div className="mt-5 space-y-5 text-sm leading-8 text-slate-700">
             {tool.guideParagraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>

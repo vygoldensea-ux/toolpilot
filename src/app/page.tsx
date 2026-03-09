@@ -40,6 +40,31 @@ export default function HomePage() {
                 practical workflows. Use JSON formatting, Base64 encode/decode, UUID generation, JWT
                 decoding, and cron expression utilities without extra setup.
               </p>
+              <p className="mt-4 max-w-3xl text-sm leading-8 text-slate-600">
+                ToolPilot provides free online developer tools for common daily tasks across API debugging,
+                data conversion, and automation setup. You can format and validate JSON, run Base64 encode and
+                decode flows, generate UUID v4 identifiers, decode JWT payloads, and build cron expressions in
+                seconds. The site also includes focused utilities such as
+                {" "}
+                <Link href="/timestamp-converter" className="text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-slate-900">
+                  Unix Timestamp Converter
+                </Link>
+                ,{" "}
+                <Link href="/url-encode-decode" className="text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-slate-900">
+                  URL Encode Decode
+                </Link>
+                ,{" "}
+                <Link href="/regex-tester" className="text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-slate-900">
+                  Regex Tester
+                </Link>
+                , and
+                {" "}
+                <Link href="/sql-formatter" className="text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-slate-900">
+                  SQL Formatter
+                </Link>
+                . Each tool has its own SEO-ready page with examples, FAQs, and related links so both users
+                and search engines can discover the right utility quickly.
+              </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link href="#featured-tools" className="tp-button-primary">
                   Explore tools
