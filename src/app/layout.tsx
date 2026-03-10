@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import type { ReactNode } from "react";
 import "./globals.css";
 import { AnalyticsScripts } from "@/components/analytics/AnalyticsScripts";
+import { GaPageViewTracker } from "@/components/analytics/GaPageViewTracker";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { siteConfig } from "@/config/site";
+
+const GA_MEASUREMENT_ID = "G-FEHKDV6VYG";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.baseUrl),
@@ -39,20 +43,26 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           name="google-site-verification"
           content="3NY1dMlvXAyhY3dDd3eb2CXETx6MH2mg8jf3TmcjBcw"
         />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FEHKDV6VYG"></script>
-        <script>
+        <Script
+          id="ga-script"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga-init" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'G-FEHKDV6VYG');`}
-        </script>
-        <script
-          async
+gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: false });`}
+        </Script>
+        <Script
+          id="adsense-script"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3600965442508079"
           crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
       </head>
       <body>
+        <GaPageViewTracker measurementId={GA_MEASUREMENT_ID} />
         <AnalyticsScripts />
         <SiteLayout>{children}</SiteLayout>
       </body>
