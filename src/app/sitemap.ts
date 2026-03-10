@@ -1,21 +1,10 @@
 import type { MetadataRoute } from "next";
-import { seoLandingTools } from "@/config/seo-landing-tools";
-import { siteConfig } from "@/config/site";
+import { liveToolRegistry, siteConfig } from "@/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = [
-    "/",
-    "/about",
-    "/contact",
-    "/privacy-policy",
-    "/terms",
-    "/json-formatter",
-    "/base64-tools",
-    "/uuid-generator",
-    "/jwt-decoder",
-    "/cron-generator",
-    ...seoLandingTools.map((tool) => `/${tool.slug}`)
-  ];
+  const staticRoutes = ["/", "/about", "/contact", "/privacy-policy", "/privacy", "/terms", "/disclaimer", "/sitemap"];
+  const toolRoutes = liveToolRegistry.map((tool) => `/${tool.slug}`);
+  const routes = Array.from(new Set([...staticRoutes, ...toolRoutes]));
 
   return routes.map((route) => ({
     url: new URL(route, siteConfig.baseUrl).toString(),
