@@ -32,6 +32,11 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} | Developer Tools`,
     description: siteConfig.description,
     images: [siteConfig.social.ogImage]
+  },
+  icons: {
+    icon: [{ url: "/favicon.ico" }],
+    shortcut: [{ url: "/favicon.ico" }],
+    apple: [{ url: "/apple-touch-icon.png" }]
   }
 };
 

@@ -2,15 +2,28 @@ import type { ToolDefinition } from "@/config/site";
 import { siteConfig } from "@/config/site";
 import { toCanonical } from "./metadata";
 
-export type StructuredDataType = "WebPage" | "SoftwareApplication";
+export type StructuredDataType = "WebPage" | "SoftwareApplication" | "Organization";
 
 export function buildStructuredData(args: {
   type: StructuredDataType;
   title: string;
   description: string;
   path: string;
+  logoUrl?: string;
+  absoluteUrl?: string;
 }) {
   const url = toCanonical(args.path);
+
+  if (args.type === "Organization") {
+    return {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: args.title,
+      description: args.description,
+      url: args.absoluteUrl ?? siteConfig.baseUrl,
+      logo: args.logoUrl ?? `${siteConfig.baseUrl}/logo.png`
+    };
+  }
 
   if (args.type === "SoftwareApplication") {
     return {

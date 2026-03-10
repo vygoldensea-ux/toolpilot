@@ -22,12 +22,21 @@ export default function HomePage() {
     description: siteConfig.description,
     path: "/"
   });
+  const organizationSchema = buildStructuredData({
+    type: "Organization",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    path: "/",
+    absoluteUrl: "https://toolpilot.xyz",
+    logoUrl: "https://toolpilot.xyz/logo.png"
+  });
 
   const featuredTools = liveToolRegistry;
 
   return (
     <>
       <StructuredData data={schema} />
+      <StructuredData data={organizationSchema} />
       <Container>
         <section className="py-16 sm:py-24">
           <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr]">
