@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { ToolDefinition, ToolRegistryItem } from "@/config/site";
 import { Container } from "@/components/ui/Container";
+import { ToolIcon } from "@/components/ui/ToolIcon";
 
 type ToolPageLayoutProps = {
   tool: ToolDefinition;
@@ -14,7 +15,8 @@ export function ToolPageLayout({ tool, children, relatedTools }: ToolPageLayoutP
     <Container>
       <article className="py-14 sm:py-20">
         <header className="max-w-4xl">
-          <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">{tool.name}</h1>
+          <ToolIcon slug={tool.slug} className="h-12 w-12 rounded-2xl" />
+          <h1 className="mt-5 text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">{tool.name}</h1>
           <p className="mt-5 text-base leading-8 text-slate-600">{tool.description}</p>
           <p className="mt-4 text-base leading-8 text-slate-600">{tool.intro}</p>
         </header>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { Container } from "@/components/ui/Container";
@@ -15,8 +16,9 @@ export function Header() {
     <header className="border-b border-slate-200 bg-white">
       <Container>
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="text-lg font-semibold tracking-tight text-slate-900">
-            {siteConfig.name}
+          <Link href="/" className="inline-flex items-center gap-3 text-lg font-semibold tracking-tight text-slate-900">
+            <Image src="/logo.png" alt="" width={28} height={28} className="h-7 w-7 rounded-md" priority />
+            <span>{siteConfig.name}</span>
           </Link>
           <div className="flex items-center gap-4">
             <nav aria-label="Primary navigation" className="flex items-center gap-6 text-sm text-slate-600">
