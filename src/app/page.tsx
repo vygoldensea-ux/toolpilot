@@ -27,8 +27,8 @@ export default function HomePage() {
     title: siteConfig.name,
     description: siteConfig.description,
     path: "/",
-    absoluteUrl: "https://toolpilot.xyz",
-    logoUrl: "https://toolpilot.xyz/logo.png"
+    absoluteUrl: siteConfig.baseUrl,
+    logoUrl: `${siteConfig.baseUrl}/logo.png`
   });
 
   const featuredTools = liveToolRegistry;
