@@ -12,8 +12,8 @@ export default function PrivacyPolicyPage() {
   return (
     <Container>
       <section className="py-16 sm:py-24">
-        <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">Privacy Policy</h1>
-        <div className="tp-panel mt-8 space-y-4 p-7 text-sm leading-8 text-slate-600 sm:p-10">
+        <h1 className="text-4xl font-semibold tracking-tight text-[#2e295b] sm:text-5xl">Privacy Policy</h1>
+        <div className="tp-panel mt-8 space-y-4 p-7 text-sm leading-8 text-[#666b86] sm:p-10">
           <p>
             ToolPilot is designed to process tool inputs in the browser for core MVP features whenever
             possible.

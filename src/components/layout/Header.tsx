@@ -13,17 +13,17 @@ function XIcon() {
 
 export function Header() {
   return (
-    <header className="border-b border-slate-200 bg-white">
+    <header className="bg-transparent">
       <Container>
-        <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="inline-flex items-center gap-3 text-lg font-semibold tracking-tight text-slate-900">
-            <Image src="/logo.png" alt="" width={28} height={28} className="h-7 w-7 rounded-md" priority />
+        <div className="flex h-20 items-center justify-between">
+          <Link href="/" className="inline-flex items-center gap-3 text-lg font-semibold tracking-tight text-[#312a63]">
+            <Image src="/logo.png" alt="" width={34} height={34} className="h-8 w-8 rounded-xl" priority />
             <span>{siteConfig.name}</span>
           </Link>
           <div className="flex items-center gap-4">
-            <nav aria-label="Primary navigation" className="flex items-center gap-6 text-sm text-slate-600">
+            <nav aria-label="Primary navigation" className="flex items-center gap-6 text-sm text-[#5f6180]">
               {siteConfig.navigation.map((item) => (
-                <Link key={item.href} href={item.href} className="transition hover:text-slate-900">
+                <Link key={item.href} href={item.href} className="transition hover:text-brand-700">
                   {item.label}
                 </Link>
               ))}
@@ -33,7 +33,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Founder on X"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition hover:bg-slate-100 hover:text-slate-800"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-brand-200 bg-white/80 text-[#66688a] transition hover:border-brand-300 hover:text-brand-700"
             >
               <XIcon />
             </a>

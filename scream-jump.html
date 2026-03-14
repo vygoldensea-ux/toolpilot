@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scream Jump</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg-top: #b7ebff;
+      --bg-bottom: #eef9ef;
+      --shell: rgba(251, 255, 255, 0.72);
+      --panel: rgba(255, 251, 244, 0.94);
+      --panel-strong: rgba(255, 249, 239, 0.98);
+      --stroke: rgba(39, 72, 105, 0.1);
+      --ink: #213a62;
+      --muted: #597092;
+      --orange: #ff9f68;
+      --green: #57c86f;
+      --blue: #4d7bf3;
+      --yellow: #ffd660;
+      --shadow: rgba(38, 72, 112, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Trebuchet MS", "Comic Sans MS", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.78), transparent 28%),
+        radial-gradient(circle at 90% 12%, rgba(255, 255, 255, 0.48), transparent 24%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--ink);
+      padding: 18px;
+    }
+
+    .game-shell {
+      width: min(1180px, 100%);
+      background: var(--shell);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 32px;
+      box-shadow: 0 24px 70px var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      padding: 22px;
+    }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 6px 6px 14px;
+    }
+
+    .title-group h1 {
+      margin: 0;
+      font-size: clamp(3rem, 5vw, 4.4rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+
+    .title-group p {
+      margin: 10px 0 0;
+      font-size: 1.02rem;
+      color: var(--muted);
+    }
+
+    .scoreboard {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      padding-top: 8px;
+    }
+
+    .pill {
+      background: var(--panel-strong);
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 700;
+      border: 1px solid var(--stroke);
+      box-shadow: 0 6px 14px rgba(41, 76, 120, 0.08);
+    }
+
+    .control-bar {
+      display: grid;
+      grid-template-columns: auto minmax(180px, 1fr) minmax(260px, 380px);
+      gap: 18px;
+      align-items: center;
+      padding: 0 6px 16px;
+    }
+
+    .control-panel {
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: 26px;
+      padding: 18px 20px;
+      box-shadow: 0 14px 26px rgba(40, 75, 114, 0.08);
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      min-height: 58px;
+      padding: 14px 24px;
+      font: inherit;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      background: var(--orange);
+      box-shadow: 0 10px 20px rgba(255, 159, 104, 0.26);
+      transition: transform 120ms ease, filter 120ms ease, opacity 120ms ease;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    #startBtn {
+      background: var(--green);
+      box-shadow: 0 10px 20px rgba(87, 200, 111, 0.28);
+    }
+
+    #restartBtn,
+    #overlayRestartBtn {
+      background: var(--blue);
+      box-shadow: 0 10px 20px rgba(77, 123, 243, 0.28);
+    }
+
+    .instruction-block {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .instruction-block strong {
+      font-size: 1.02rem;
+      line-height: 1.2;
+    }
+
+    .instruction-block p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .meter-wrap {
+      display: grid;
+      gap: 8px;
+    }
+
+    .meter {
+      position: relative;
+      height: 16px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #dcf5df, #fff0ad, #ffd6ce);
+      overflow: hidden;
+      outline: 1px solid rgba(31, 52, 82, 0.1);
+    }
+
+    .meter-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0;
+      background: linear-gradient(90deg, #4ac16a, #ffd24d, #ff6b61);
+      border-radius: inherit;
+    }
+
+    .meter-thresholds {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .stage {
+      position: relative;
+      padding: 0 6px 6px;
+    }
+
+    canvas {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: block;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.75);
+      box-shadow: 0 18px 34px rgba(41, 77, 120, 0.12);
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0 6px 6px;
+      display: none;
+      place-items: center;
+      background: rgba(30, 56, 92, 0.18);
+      border-radius: 30px;
+    }
+
+    .overlay.show {
+      display: grid;
+    }
+
+    .overlay-card {
+      width: min(360px, calc(100% - 30px));
+      text-align: center;
+      background: rgba(255, 252, 245, 0.95);
+      border-radius: 26px;
+      padding: 24px;
+      border: 1px solid rgba(39, 72, 105, 0.08);
+      box-shadow: 0 16px 34px rgba(31, 52, 82, 0.14);
+    }
+
+    .overlay-card h2 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    .overlay-card p {
+      margin: 6px 0;
+    }
+
+    .hint {
+      font-size: 0.92rem;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 10px;
+      }
+
+      .game-shell {
+        padding: 14px;
+      }
+
+      .topbar,
+      .control-bar,
+      .stage {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .control-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .scoreboard {
+        justify-content: flex-start;
+        padding-top: 0;
+      }
+
+      .overlay {
+        inset: 0 0 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-shell">
+    <div class="topbar">
+      <div class="title-group">
+        <h1>Scream Jump</h1>
+        <p>Speak softly to hop. Speak louder to jump higher.</p>
+      </div>
+      <div class="scoreboard">
+        <div class="pill">Score: <span id="scoreValue">0</span></div>
+        <div class="pill">Best: <span id="bestValue">0</span></div>
+      </div>
+    </div>
+
+    <div class="control-bar control-panel">
+      <div class="buttons">
+        <button id="micBtn">Enable Microphone</button>
+        <button id="startBtn">Start Game</button>
+        <button id="restartBtn">Restart</button>
+      </div>
+
+      <div class="instruction-block">
+        <strong>Whisper to hop. Scream to survive.</strong>
+        <p id="statusText">Enable the mic for voice jumps, or press Space as a fallback.</p>
+      </div>
+
+      <div class="meter-wrap">
+        <strong>Microphone volume</strong>
+        <div class="meter" aria-hidden="true">
+          <div class="meter-fill" id="meterFill"></div>
+        </div>
+        <div class="meter-thresholds">
+          <span>Hop</span>
+          <span>Jump</span>
+          <span>YELP!</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <canvas id="gameCanvas" width="960" height="540"></canvas>
+      <div class="overlay show" id="gameOverlay">
+        <div class="overlay-card">
+          <h2 id="overlayTitle">Scream Jump</h2>
+          <p id="overlayMessage">Enable your microphone, then start running.</p>
+          <p id="overlayScore">Final score: 0</p>
+          <button id="overlayRestartBtn">Restart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      // setup
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d", { alpha: false });
+      const scoreValue = document.getElementById("scoreValue");
+      const bestValue = document.getElementById("bestValue");
+      const meterFill = document.getElementById("meterFill");
+      const micBtn = document.getElementById("micBtn");
+      const startBtn = document.getElementById("startBtn");
+      const restartBtn = document.getElementById("restartBtn");
+      const overlay = document.getElementById("gameOverlay");
+      const overlayTitle = document.getElementById("overlayTitle");
+      const overlayMessage = document.getElementById("overlayMessage");
+      const overlayScore = document.getElementById("overlayScore");
+      const overlayRestartBtn = document.getElementById("overlayRestartBtn");
+      const statusText = document.getElementById("statusText");
+
+      const W = canvas.width;
+      const H = canvas.height;
+      const GROUND_Y = 416;
+      const STORAGE_KEY = "scream-jump-best-score";
+
+      const obstacleDefs = {
+        crate: { width: 56, height: 52, hitW: 44, hitH: 40 },
+        cactus: { width: 38, height: 78, hitW: 28, hitH: 68 },
+        spike: { width: 68, height: 40, hitW: 56, hitH: 28 }
+      };
+      const obstacleTypes = Object.keys(obstacleDefs);
+
+      const state = {
+        mode: "ready",
+        time: 0,
+        score: 0,
+        best: Number(localStorage.getItem(STORAGE_KEY) || 0),
+        speed: 265,
+        spawnTimer: 1.35,
+        clouds: [],
+        obstacles: [],
+        groundOffset: 0,
+        mic: {
+          enabled: false,
+          status: "idle",
+          raw: 0,
+          smooth: 0,
+          baseline: 0.015,
+          noiseFloor: 0.02,
+          lastTrigger: 0,
+          triggered: false,
+          stream: null,
+          context: null,
+          analyser: null,
+          data: null
+        },
+        controls: {
+          spaceHeld: false,
+          armed: true
+        },
+        player: {
+          x: 210,
+          y: GROUND_Y,
+          vy: 0,
+          width: 94,
+          height: 88,
+          stretch: 0,
+          blink: 0
+        }
+      };
+
+      bestValue.textContent = String(state.best);
+
+      function rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function resetClouds() {
+        state.clouds = Array.from({ length: 5 }, (_, index) => ({
+          x: index * 220 + rand(0, 80),
+          y: rand(55, 165),
+          size: rand(0.7, 1.25),
+          speed: rand(12, 26)
+        }));
+      }
+
+      function resetRun() {
+        state.mode = "ready";
+        state.time = 0;
+        state.score = 0;
+        state.speed = 248;
+        state.spawnTimer = 1.55;
+        state.obstacles.length = 0;
+        state.groundOffset = 0;
+        state.player.x = 210;
+        state.player.y = GROUND_Y;
+        state.player.vy = 0;
+        state.player.stretch = 0;
+        state.mic.lastTrigger = -10;
+        state.mic.triggered = false;
+        updateScore();
+        showOverlay("Scream Jump", state.mic.enabled ? "Speak to jump. Soft voice, small hop. Big yell, big leap." : "Enable your microphone, or use Space if you are testing locally.");
+      }
+
+      function startGame() {
+        state.mode = "playing";
+        state.time = 0;
+        state.score = 0;
+        state.speed = 248;
+        state.spawnTimer = 1.7;
+        state.obstacles.length = 0;
+        state.player.x = 210;
+        state.player.y = GROUND_Y;
+        state.player.vy = 0;
+        state.player.stretch = 0;
+        state.mic.lastTrigger = -10;
+        state.mic.triggered = false;
+        state.controls.armed = true;
+        updateScore();
+        hideOverlay();
+        statusText.textContent = state.mic.enabled ? "Mic is live. Time your voice bursts to clear obstacles." : "Running without mic. Press Space to jump.";
+      }
+
+      function endGame() {
+        state.mode = "gameover";
+        if (state.score > state.best) {
+          state.best = Math.floor(state.score);
+          localStorage.setItem(STORAGE_KEY, String(state.best));
+          bestValue.textContent = String(state.best);
+        }
+        showOverlay("Game Over", "The chicken panicked into a crate-shaped problem.");
+      }
+
+      function showOverlay(title, message) {
+        overlayTitle.textContent = title;
+        overlayMessage.textContent = message;
+        overlayScore.textContent = "Final score: " + Math.floor(state.score);
+        overlay.classList.add("show");
+      }
+
+      function hideOverlay() {
+        overlay.classList.remove("show");
+      }
+
+      function updateScore() {
+        scoreValue.textContent = String(Math.floor(state.score));
+      }
+
+      // audio input
+      async function enableMicrophone() {
+        try {
+          statusText.textContent = "Requesting microphone permission...";
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: true,
+              noiseSuppression: true,
+              autoGainControl: true
+            }
+          });
+
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          const audioContext = new AudioCtx();
+          const source = audioContext.createMediaStreamSource(stream);
+          const analyser = audioContext.createAnalyser();
+          analyser.fftSize = 1024;
+          analyser.smoothingTimeConstant = 0.75;
+          source.connect(analyser);
+
+          state.mic.enabled = true;
+          state.mic.status = "live";
+          state.mic.stream = stream;
+          state.mic.context = audioContext;
+          state.mic.analyser = analyser;
+          state.mic.data = new Uint8Array(analyser.fftSize);
+          state.mic.raw = 0;
+          state.mic.smooth = 0;
+          micBtn.disabled = true;
+          statusText.textContent = "Microphone enabled. Stay quiet for a moment while the game learns room noise.";
+          showOverlay("Scream Jump", "Mic ready. Press start, then cluck at the chicken.");
+        } catch (error) {
+          statusText.textContent = "Microphone permission was denied or unavailable.";
+          console.error(error);
+        }
+      }
+
+      function sampleMicrophone(dt) {
+        const mic = state.mic;
+        if (!mic.enabled || !mic.analyser || !mic.data) {
+          return 0;
+        }
+
+        mic.analyser.getByteTimeDomainData(mic.data);
+        let sum = 0;
+        for (let i = 0; i < mic.data.length; i++) {
+          const normalized = (mic.data[i] - 128) / 128;
+          sum += normalized * normalized;
+        }
+        const rms = Math.sqrt(sum / mic.data.length);
+        mic.raw = rms;
+
+        const baselineTarget = Math.min(mic.baseline, rms + 0.002);
+        if (state.mode !== "playing") {
+          mic.baseline = mic.baseline * 0.97 + rms * 0.03;
+        } else {
+          mic.baseline = mic.baseline * 0.995 + baselineTarget * 0.005;
+        }
+        mic.noiseFloor = Math.max(0.018, mic.baseline + 0.012);
+        mic.smooth += (rms - mic.smooth) * clamp(dt * 8.5, 0, 1);
+
+        const normalized = clamp((mic.smooth - mic.noiseFloor) / 0.26, 0, 1);
+        meterFill.style.width = (normalized * 100).toFixed(1) + "%";
+        return normalized;
+      }
+
+      function triggerJump(level) {
+        const player = state.player;
+        const grounded = player.y >= GROUND_Y - 0.5;
+        const mic = state.mic;
+        const canTrigger = state.time - mic.lastTrigger > 0.18;
+        if (!grounded || !canTrigger) {
+          return false;
+        }
+        const jumpStrength = 420 + level * 360;
+        player.vy = -jumpStrength;
+        player.stretch = 0.35 + level * 0.45;
+        mic.lastTrigger = state.time;
+        return true;
+      }
+
+      function maybeTriggerJump(level) {
+        if (state.mode !== "playing") {
+          return;
+        }
+        const mic = state.mic;
+        const jumpThreshold = 0.12;
+
+        if (level > jumpThreshold && !mic.triggered) {
+          if (triggerJump(level)) {
+            mic.triggered = true;
+          }
+        }
+
+        if (state.controls.spaceHeld && state.controls.armed) {
+          if (triggerJump(0.56)) {
+            state.controls.armed = false;
+            mic.triggered = true;
+          }
+        }
+
+        if (level < 0.08) {
+          mic.triggered = false;
+        }
+
+        if (!state.controls.spaceHeld) {
+          state.controls.armed = true;
+        }
+      }
+
+      // player
+      function updatePlayer(dt, volumeLevel) {
+        const player = state.player;
+        maybeTriggerJump(volumeLevel);
+
+        player.vy += 1180 * dt;
+        player.y += player.vy * dt;
+
+        if (player.y > GROUND_Y) {
+          player.y = GROUND_Y;
+          if (player.vy > 140) {
+            player.stretch = -0.25;
+          }
+          player.vy = 0;
+        }
+
+        player.stretch += (0 - player.stretch) * clamp(dt * 7, 0, 1);
+        player.blink += dt * 4.4;
+      }
+
+      function drawChicken(x, y, volumeLevel) {
+        const player = state.player;
+        const groundWave = Math.sin(state.time * 12) * (player.y >= GROUND_Y - 0.5 ? 5 : 0);
+        const drawY = y + groundWave;
+        const squash = clamp(player.stretch, -0.3, 0.6);
+        const sx = 1 - squash * 0.32;
+        const sy = 1 + squash * 0.34;
+        const panic = volumeLevel > 0.62;
+        const lineColor = "#2d160f";
+
+        ctx.save();
+        ctx.translate(x, drawY);
+        ctx.scale(sx, sy);
+
+        ctx.fillStyle = "rgba(39, 72, 105, 0.14)";
+        ctx.beginPath();
+        ctx.ellipse(0, 38, 34, 9, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.moveTo(-62, -16);
+        ctx.quadraticCurveTo(-82, -10, -74, 8);
+        ctx.quadraticCurveTo(-70, 18, -56, 16);
+        ctx.quadraticCurveTo(-64, 28, -56, 40);
+        ctx.quadraticCurveTo(-44, 55, -18, 60);
+        ctx.quadraticCurveTo(22, 68, 48, 47);
+        ctx.quadraticCurveTo(70, 27, 58, -4);
+        ctx.quadraticCurveTo(46, -42, 16, -56);
+        ctx.quadraticCurveTo(-14, -70, -40, -52);
+        ctx.quadraticCurveTo(-58, -38, -62, -16);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.fillStyle = "#d9414e";
+        ctx.beginPath();
+        ctx.moveTo(-6, -62);
+        ctx.quadraticCurveTo(-18, -84, 0, -88);
+        ctx.quadraticCurveTo(14, -98, 24, -82);
+        ctx.quadraticCurveTo(40, -86, 50, -69);
+        ctx.quadraticCurveTo(60, -56, 48, -46);
+        ctx.quadraticCurveTo(34, -40, 20, -46);
+        ctx.quadraticCurveTo(6, -35, -10, -40);
+        ctx.quadraticCurveTo(-22, -45, -24, -58);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#ffcb42";
+        ctx.beginPath();
+        ctx.moveTo(14, -8);
+        ctx.lineTo(34, 2);
+        ctx.lineTo(15, 16);
+        ctx.lineTo(3, 6);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = lineColor;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(-6, -30);
+        ctx.quadraticCurveTo(-18, -48, -32, -56);
+        ctx.moveTo(19, -33);
+        ctx.quadraticCurveTo(30, -48, 45, -54);
+        ctx.stroke();
+
+        ctx.fillStyle = "#25100c";
+        ctx.beginPath();
+        ctx.ellipse(-10, -11, panic ? 10 : 8, panic ? 5.4 : 4.4, -0.25, 0, Math.PI * 2);
+        ctx.ellipse(24, -11, panic ? 10 : 8, panic ? 5.4 : 4.4, 0.25, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(1, -30);
+        ctx.lineTo(5, -17);
+        ctx.moveTo(8, -28);
+        ctx.lineTo(13, -15);
+        ctx.moveTo(-1, -26);
+        ctx.lineTo(1, -16);
+        ctx.moveTo(-1, 4);
+        ctx.quadraticCurveTo(-7, 15, -1, 26);
+        ctx.moveTo(7, 6);
+        ctx.quadraticCurveTo(13, 18, 10, 31);
+        ctx.stroke();
+
+        ctx.fillStyle = "#54cfff";
+        ctx.beginPath();
+        ctx.moveTo(-24, -8);
+        ctx.quadraticCurveTo(-38, 4, -32, 26);
+        ctx.quadraticCurveTo(-28, 41, -16, 53);
+        ctx.quadraticCurveTo(-9, 40, -11, 22);
+        ctx.quadraticCurveTo(-13, 6, -8, -6);
+        ctx.quadraticCurveTo(-13, -12, -24, -8);
+        ctx.closePath();
+        ctx.moveTo(33, -8);
+        ctx.quadraticCurveTo(44, 2, 43, 24);
+        ctx.quadraticCurveTo(43, 42, 31, 55);
+        ctx.quadraticCurveTo(20, 44, 21, 25);
+        ctx.quadraticCurveTo(23, 7, 18, -7);
+        ctx.quadraticCurveTo(22, -13, 33, -8);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(255,255,255,0.9)";
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(-26, 4);
+        ctx.quadraticCurveTo(-30, 14, -24, 23);
+        ctx.moveTo(-23, 33);
+        ctx.quadraticCurveTo(-26, 41, -22, 47);
+        ctx.moveTo(35, 3);
+        ctx.quadraticCurveTo(38, 12, 34, 20);
+        ctx.moveTo(32, 31);
+        ctx.quadraticCurveTo(35, 39, 31, 47);
+        ctx.stroke();
+
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(-2, 12);
+        ctx.quadraticCurveTo(9, 7, 17, 13);
+        ctx.quadraticCurveTo(8, 24, -5, 20);
+        ctx.quadraticCurveTo(-8, 16, -2, 12);
+        ctx.stroke();
+
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(-18, 52);
+        ctx.lineTo(-21, 81);
+        ctx.moveTo(8, 52);
+        ctx.lineTo(6, 81);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#a86519";
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(-24, 81);
+        ctx.lineTo(-32, 87);
+        ctx.moveTo(-20, 81);
+        ctx.lineTo(-20, 89);
+        ctx.moveTo(-16, 81);
+        ctx.lineTo(-9, 87);
+        ctx.moveTo(0, 81);
+        ctx.lineTo(-7, 87);
+        ctx.moveTo(5, 81);
+        ctx.lineTo(5, 89);
+        ctx.moveTo(10, 81);
+        ctx.lineTo(18, 87);
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      // obstacles
+      function spawnObstacle() {
+        const type = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
+        const def = obstacleDefs[type];
+        state.obstacles.push({
+          type,
+          x: W + def.width + rand(10, 54),
+          y: GROUND_Y,
+          width: def.width,
+          height: def.height,
+          hitW: def.hitW,
+          hitH: def.hitH
+        });
+        const fairnessPadding = Math.max(0, (state.speed - 248) * 0.002);
+        state.spawnTimer = rand(1.65, 2.35) - fairnessPadding;
+      }
+
+      function updateObstacles(dt) {
+        state.spawnTimer -= dt;
+        if (state.mode === "playing" && state.spawnTimer <= 0 && state.obstacles.length === 0) {
+          spawnObstacle();
+        }
+
+        for (const obstacle of state.obstacles) {
+          obstacle.x -= state.speed * dt;
+        }
+
+        state.obstacles = state.obstacles.filter((obstacle) => obstacle.x + obstacle.width > -40);
+      }
+
+      function drawCrate(obstacle) {
+        const x = obstacle.x;
+        const y = obstacle.y - obstacle.height;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.fillStyle = "#bf763d";
+        ctx.fillRect(0, 0, obstacle.width, obstacle.height);
+        ctx.fillStyle = "rgba(255,255,255,0.18)";
+        ctx.fillRect(0, 0, obstacle.width, 8);
+        ctx.strokeStyle = "#8e5129";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(2, 2, obstacle.width - 4, obstacle.height - 4);
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(8, 8);
+        ctx.lineTo(obstacle.width - 8, obstacle.height - 8);
+        ctx.moveTo(obstacle.width - 8, 8);
+        ctx.lineTo(8, obstacle.height - 8);
+        ctx.moveTo(obstacle.width * 0.5, 0);
+        ctx.lineTo(obstacle.width * 0.5, obstacle.height);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawCactus(obstacle) {
+        const x = obstacle.x;
+        const y = obstacle.y - obstacle.height;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.fillStyle = "rgba(39, 72, 105, 0.1)";
+        ctx.beginPath();
+        ctx.ellipse(obstacle.width * 0.5, obstacle.height + 9, obstacle.width * 0.42, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.translate(0, -2);
+        ctx.fillStyle = "#3eb35f";
+        ctx.beginPath();
+        ctx.roundRect(11, 12, 16, obstacle.height - 12, 9);
+        ctx.roundRect(0, 30, 12, 26, 6);
+        ctx.roundRect(26, 22, 12, 32, 6);
+        ctx.fill();
+        ctx.strokeStyle = "#f3ffef";
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 4; i++) {
+          const yy = 20 + i * 14;
+          ctx.beginPath();
+          ctx.moveTo(8, yy);
+          ctx.lineTo(2, yy - 4);
+          ctx.moveTo(31, yy - 5);
+          ctx.lineTo(36, yy - 1);
+          ctx.moveTo(20, yy);
+          ctx.lineTo(15, yy - 5);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawSpike(obstacle) {
+        const x = obstacle.x;
+        const y = obstacle.y - obstacle.height;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.fillStyle = "rgba(39, 72, 105, 0.1)";
+        ctx.beginPath();
+        ctx.ellipse(obstacle.width * 0.5, obstacle.height + 10, obstacle.width * 0.44, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#7583a6";
+        ctx.fillRect(0, 18, obstacle.width, obstacle.height - 18);
+        ctx.fillStyle = "#d5def0";
+        for (let i = 0; i < 4; i++) {
+          const px = i * 17;
+          ctx.beginPath();
+          ctx.moveTo(px + 2, 18);
+          ctx.lineTo(px + 10, 0);
+          ctx.lineTo(px + 18, 18);
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      function drawObstacle(obstacle) {
+        if (obstacle.type === "crate") drawCrate(obstacle);
+        else if (obstacle.type === "cactus") drawCactus(obstacle);
+        else drawSpike(obstacle);
+      }
+
+      // collision
+      function playerBounds() {
+        const width = 58;
+        const height = 62;
+        return {
+          x: state.player.x - 32,
+          y: state.player.y - height,
+          width,
+          height
+        };
+      }
+
+      function obstacleBounds(obstacle) {
+        return {
+          x: obstacle.x + (obstacle.width - obstacle.hitW) * 0.5,
+          y: obstacle.y - obstacle.hitH,
+          width: obstacle.hitW,
+          height: obstacle.hitH
+        };
+      }
+
+      function intersects(a, b) {
+        return (
+          a.x < b.x + b.width &&
+          a.x + a.width > b.x &&
+          a.y < b.y + b.height &&
+          a.y + a.height > b.y
+        );
+      }
+
+      function checkCollisions() {
+        if (state.mode !== "playing") {
+          return;
+        }
+        const player = playerBounds();
+        for (const obstacle of state.obstacles) {
+          if (intersects(player, obstacleBounds(obstacle))) {
+            endGame();
+            return;
+          }
+        }
+      }
+
+      // rendering
+      function drawCloud(cloud) {
+        ctx.save();
+        ctx.translate(cloud.x, cloud.y);
+        ctx.scale(cloud.size, cloud.size);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+        ctx.beginPath();
+        ctx.arc(0, 0, 18, 0, Math.PI * 2);
+        ctx.arc(20, -8, 20, 0, Math.PI * 2);
+        ctx.arc(45, 0, 16, 0, Math.PI * 2);
+        ctx.arc(23, 8, 19, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawBackground() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "#76d5ff";
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.18)";
+        ctx.fillRect(0, H * 0.48, W, H * 0.52);
+        ctx.fillStyle = "rgba(255,255,255,0.12)";
+        ctx.fillRect(0, H * 0.68, W, H * 0.32);
+
+        const sunPulse = 1 + Math.sin(state.time * 0.7) * 0.04;
+        ctx.save();
+        ctx.translate(850, 86);
+        ctx.scale(sunPulse, sunPulse);
+        ctx.fillStyle = "rgba(255, 227, 110, 0.2)";
+        ctx.beginPath();
+        ctx.arc(0, 0, 64, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#ffe36e";
+        ctx.beginPath();
+        ctx.arc(0, 0, 46, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        for (const cloud of state.clouds) {
+          drawCloud(cloud);
+        }
+
+        ctx.fillStyle = "#b8ecff";
+        ctx.beginPath();
+        ctx.moveTo(0, 300);
+        ctx.quadraticCurveTo(120, 250, 250, 284);
+        ctx.quadraticCurveTo(370, 314, 520, 272);
+        ctx.quadraticCurveTo(700, 224, 960, 282);
+        ctx.lineTo(960, GROUND_Y);
+        ctx.lineTo(0, GROUND_Y);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = "#9ad0a9";
+        ctx.beginPath();
+        ctx.moveTo(0, 372);
+        ctx.quadraticCurveTo(130, 328, 264, 364);
+        ctx.quadraticCurveTo(418, 402, 560, 352);
+        ctx.quadraticCurveTo(740, 296, 900, 356);
+        ctx.quadraticCurveTo(935, 370, 960, 360);
+        ctx.lineTo(960, GROUND_Y);
+        ctx.lineTo(0, GROUND_Y);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = "#79d559";
+        ctx.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+        ctx.fillStyle = "#a86f3d";
+        ctx.fillRect(0, GROUND_Y + 26, W, H - (GROUND_Y + 26));
+
+        const stripe = 42;
+        ctx.fillStyle = "#67bf4b";
+        for (let x = -(state.groundOffset % stripe); x < W + stripe; x += stripe) {
+          ctx.beginPath();
+          ctx.moveTo(x, GROUND_Y + 2);
+          ctx.quadraticCurveTo(x + 8, GROUND_Y - 10, x + 16, GROUND_Y + 2);
+          ctx.quadraticCurveTo(x + 24, GROUND_Y - 12, x + 34, GROUND_Y + 4);
+          ctx.lineTo(x + 34, GROUND_Y + 13);
+          ctx.lineTo(x, GROUND_Y + 12);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        ctx.strokeStyle = "rgba(134, 84, 37, 0.14)";
+        ctx.lineWidth = 2;
+        for (let y = GROUND_Y + 46; y < H; y += 28) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(W, y);
+          ctx.stroke();
+        }
+
+        ctx.strokeStyle = "rgba(255,255,255,0.45)";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(0, GROUND_Y + 28);
+        ctx.lineTo(W, GROUND_Y + 28);
+        ctx.stroke();
+      }
+
+      function drawHUD(volumeLevel) {
+        ctx.save();
+        ctx.fillStyle = "rgba(255, 250, 243, 0.9)";
+        ctx.beginPath();
+        ctx.roundRect(18, 18, 180, 54, 18);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(39, 72, 105, 0.08)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.fillStyle = "#1f3452";
+        ctx.font = "bold 18px Trebuchet MS";
+        ctx.fillText("Mic " + Math.round(volumeLevel * 100), 34, 42);
+        ctx.font = "bold 16px Trebuchet MS";
+        const modeLabel = state.mode === "playing" ? "Running" : state.mode === "gameover" ? "Oops" : "Ready";
+        ctx.fillText(modeLabel, 34, 61);
+        ctx.restore();
+      }
+
+      function render(volumeLevel) {
+        drawBackground();
+        for (const obstacle of state.obstacles) {
+          drawObstacle(obstacle);
+        }
+        drawChicken(state.player.x, state.player.y, volumeLevel);
+        drawHUD(volumeLevel);
+      }
+
+      // UI
+      micBtn.addEventListener("click", enableMicrophone);
+      startBtn.addEventListener("click", startGame);
+      restartBtn.addEventListener("click", () => {
+        resetRun();
+        if (state.mic.enabled) {
+          startGame();
+        }
+      });
+      overlayRestartBtn.addEventListener("click", () => {
+        resetRun();
+        if (state.mic.enabled) {
+          startGame();
+        }
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.code === "Space") {
+          event.preventDefault();
+          state.controls.spaceHeld = true;
+          if (state.mode !== "playing") {
+            startGame();
+          }
+        }
+      });
+
+      window.addEventListener("keyup", (event) => {
+        if (event.code === "Space") {
+          event.preventDefault();
+          state.controls.spaceHeld = false;
+        }
+      });
+
+      // game loop
+      function update(dt) {
+        const volumeLevel = sampleMicrophone(dt);
+        state.time += dt;
+
+        for (const cloud of state.clouds) {
+          cloud.x -= cloud.speed * dt;
+          if (cloud.x < -120) {
+            cloud.x = W + rand(40, 140);
+            cloud.y = rand(55, 165);
+          }
+        }
+
+        state.groundOffset += state.speed * dt * 0.55;
+
+        if (state.mode === "playing") {
+          state.score += dt * 15;
+          state.speed = Math.min(390, 248 + state.time * 7.4);
+          updateObstacles(dt);
+          updatePlayer(dt, volumeLevel);
+          checkCollisions();
+          updateScore();
+        } else {
+          updatePlayer(dt, volumeLevel);
+        }
+
+        render(volumeLevel);
+      }
+
+      let lastFrame = performance.now();
+      function frame(now) {
+        const dt = Math.min(0.033, (now - lastFrame) / 1000);
+        lastFrame = now;
+        update(dt || 1 / 60);
+        requestAnimationFrame(frame);
+      }
+
+      window.advanceTime = (ms) => {
+        const steps = Math.max(1, Math.round(ms / (1000 / 60)));
+        for (let i = 0; i < steps; i++) {
+          update(1 / 60);
+        }
+      };
+
+      window.render_game_to_text = () => {
+        return JSON.stringify({
+          coordinateSystem: "origin top-left, +x right, +y down",
+          mode: state.mode,
+          score: Math.floor(state.score),
+          best: state.best,
+          speed: Math.round(state.speed),
+          mic: {
+            enabled: state.mic.enabled,
+            smooth: Number(state.mic.smooth.toFixed(4)),
+            normalized: Number(clamp((state.mic.smooth - state.mic.noiseFloor) / 0.26, 0, 1).toFixed(3)),
+            noiseFloor: Number(state.mic.noiseFloor.toFixed(4))
+          },
+          player: {
+            x: state.player.x,
+            y: Number(state.player.y.toFixed(2)),
+            vy: Number(state.player.vy.toFixed(2))
+          },
+          obstacles: state.obstacles.map((obstacle) => ({
+            type: obstacle.type,
+            x: Number(obstacle.x.toFixed(1)),
+            y: obstacle.y,
+            width: obstacle.width,
+            height: obstacle.height
+          }))
+        });
+      };
+
+      resetClouds();
+      resetRun();
+      render(0);
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>

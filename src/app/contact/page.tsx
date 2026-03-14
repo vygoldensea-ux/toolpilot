@@ -12,9 +12,9 @@ export default function ContactPage() {
   return (
     <Container>
       <section className="py-16 sm:py-24">
-        <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">Contact</h1>
+        <h1 className="text-4xl font-semibold tracking-tight text-[#2e295b] sm:text-5xl">Contact</h1>
         <div className="tp-panel mt-8 p-7 sm:p-10">
-          <p className="text-sm leading-8 text-slate-600">
+          <p className="text-sm leading-8 text-[#666b86]">
             For feedback and feature requests, email
             <a className="ml-1 font-medium text-brand-700 hover:text-brand-800" href="mailto:hello@toolpilot.xyz">
               hello@toolpilot.xyz

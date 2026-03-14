@@ -1,0 +1,1 @@
+{"coordinateSystem":"origin top-left, +x right, +y down","mode":"gameover","score":74,"best":74,"speed":285,"mic":{"enabled":false,"smooth":0,"normalized":0,"noiseFloor":0.02},"player":{"x":190,"y":410,"vy":0},"obstacles":[{"type":"spike","x":155.9,"y":410,"width":68,"height":40}]}

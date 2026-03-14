@@ -19,6 +19,23 @@ type ToolIconProps = {
   className?: string;
 };
 
+const iconSurfaceByKind: Record<ToolIconKind, string> = {
+  json: "border-[#e7e0ff] bg-[#f2ecff] text-brand-700",
+  code: "border-[#e4e2ff] bg-[#f3f1ff] text-brand-700",
+  key: "border-[#f6e0ff] bg-[#f9ecff] text-[#a54fd3]",
+  token: "border-[#dff1ff] bg-[#edf7ff] text-[#4d84d8]",
+  time: "border-[#ffe7b7] bg-[#fff5dd] text-[#e2a319]",
+  link: "border-[#dcecff] bg-[#eef6ff] text-[#5d7de0]",
+  hash: "border-[#e9e5ff] bg-[#f5f2ff] text-[#6e59d9]",
+  search: "border-[#e0f5ff] bg-[#effbff] text-[#27a5c9]",
+  table: "border-[#ffe5d4] bg-[#fff1e8] text-[#ef8b49]",
+  document: "border-[#e6ebff] bg-[#f3f5ff] text-[#6d79df]",
+  color: "border-[#dff5ef] bg-[#edfbf7] text-[#3ab68d]",
+  markdown: "border-[#ece5ff] bg-[#f5f0ff] text-[#8266e5]",
+  image: "border-[#ffe9df] bg-[#fff4ee] text-[#e07a4d]",
+  text: "border-[#e5f5ff] bg-[#f0faff] text-[#4d9fd3]"
+};
+
 const iconBySlug: Record<string, ToolIconKind> = {
   "json-formatter": "json",
   "json-validator": "json",
@@ -87,7 +104,7 @@ export function ToolIcon({ slug, className = "" }: ToolIconProps) {
 
   return (
     <span
-      className={`inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-brand-700 ${className}`.trim()}
+      className={`inline-flex h-12 w-12 items-center justify-center rounded-[22px] border ${iconSurfaceByKind[kind]} ${className}`.trim()}
       aria-hidden="true"
     >
       <svg
