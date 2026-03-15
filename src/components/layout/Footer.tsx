@@ -39,6 +39,21 @@ export function Footer() {
             <Link href="/contact" className="transition hover:text-brand-700">
               Contact
             </Link>
+            <Link href="/site-faq" className="transition hover:text-brand-700">
+              Site FAQ
+            </Link>
+            <Link href="/editorial-standards" className="transition hover:text-brand-700">
+              Editorial Standards
+            </Link>
+            <Link href="/changelog" className="transition hover:text-brand-700">
+              Changelog
+            </Link>
+            <Link href="/how-toolpilot-works" className="transition hover:text-brand-700">
+              How ToolPilot Works
+            </Link>
+            <Link href="/blog" className="transition hover:text-brand-700">
+              Blog
+            </Link>
           </div>
 
           <div>

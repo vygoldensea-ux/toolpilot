@@ -1,5 +1,7 @@
+import { blogPosts } from "@/config/blog";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { guides } from "@/config/guides";
 import { seoLandingTools } from "@/config/seo-landing-tools";
 import { siteConfig, tools } from "@/config/site";
 import { buildMetadata } from "@/lib/seo/metadata";
@@ -50,6 +52,36 @@ export default function HtmlSitemapPage() {
               </Link>
             </li>
             <li>
+              <Link href="/site-faq" className="transition hover:text-[#4f3d9a]">
+                Site FAQ
+              </Link>
+            </li>
+            <li>
+              <Link href="/changelog" className="transition hover:text-[#4f3d9a]">
+                Changelog
+              </Link>
+            </li>
+            <li>
+              <Link href="/how-toolpilot-works" className="transition hover:text-[#4f3d9a]">
+                How ToolPilot Works
+              </Link>
+            </li>
+            <li>
+              <Link href="/editorial-standards" className="transition hover:text-[#4f3d9a]">
+                Editorial Standards
+              </Link>
+            </li>
+            <li>
+              <Link href="/guides" className="transition hover:text-[#4f3d9a]">
+                Guides
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog" className="transition hover:text-[#4f3d9a]">
+                Blog
+              </Link>
+            </li>
+            <li>
               <Link href="/sitemap.xml" className="transition hover:text-[#4f3d9a]">
                 XML Sitemap
               </Link>
@@ -83,6 +115,40 @@ export default function HtmlSitemapPage() {
                   className="block rounded-[18px] border border-[#efe9ff] bg-[#fcfbff] px-4 py-3 transition hover:border-[#dccfff] hover:text-[#4f3d9a]"
                 >
                   {tool.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-10 rounded-[30px] border border-white/70 bg-white/80 p-7 shadow-[0_24px_70px_rgba(79,61,154,0.06)] backdrop-blur sm:p-9">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Editorial</p>
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">Guides</h2>
+          <ul className="mt-5 grid gap-3 text-sm text-[#666b86] sm:grid-cols-2">
+            {guides.map((guide) => (
+              <li key={guide.slug}>
+                <Link
+                  href={`/guides/${guide.slug}`}
+                  className="block rounded-[18px] border border-[#efe9ff] bg-[#fcfbff] px-4 py-3 transition hover:border-[#dccfff] hover:text-[#4f3d9a]"
+                >
+                  {guide.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-10 rounded-[30px] border border-white/70 bg-white/80 p-7 shadow-[0_24px_70px_rgba(79,61,154,0.06)] backdrop-blur sm:p-9">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Editorial</p>
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">Blog</h2>
+          <ul className="mt-5 grid gap-3 text-sm text-[#666b86] sm:grid-cols-2">
+            {blogPosts.map((post) => (
+              <li key={post.slug}>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="block rounded-[18px] border border-[#efe9ff] bg-[#fcfbff] px-4 py-3 transition hover:border-[#dccfff] hover:text-[#4f3d9a]"
+                >
+                  {post.title}
                 </Link>
               </li>
             ))}

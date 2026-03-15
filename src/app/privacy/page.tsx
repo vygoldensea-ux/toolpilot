@@ -12,16 +12,40 @@ export default function PrivacyPage() {
   return (
     <Container>
       <section className="py-16 sm:py-24">
-        <h1 className="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">Privacy Policy</h1>
-        <div className="tp-panel mt-8 p-7 sm:p-10 space-y-4 text-sm leading-8 text-slate-600">
-          <p>ToolPilot is designed to process tool inputs in the browser for the MVP whenever possible.</p>
+        <h1 className="text-4xl font-semibold tracking-tight text-[#2e295b] sm:text-5xl">Privacy Policy</h1>
+        <div className="tp-panel mt-8 space-y-6 p-7 text-sm leading-8 text-[#666b86] sm:p-10">
+          <p>ToolPilot is designed with privacy in mind.</p>
           <p>
-            Analytics may be enabled in production to measure product usage. We collect operational data to
-            improve reliability, performance, and developer experience.
+            Many tools on this website process data directly in the browser, meaning your input is not
+            transmitted to external servers.
           </p>
-          <p>
-            For requests related to data handling, contact <a className="text-brand-700" href="mailto:hello@toolpilot.xyz">hello@toolpilot.xyz</a>.
-          </p>
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight text-[#2e295b]">Data Handling</h2>
+            <p className="mt-4">When possible:</p>
+            <ul className="mt-4 space-y-3">
+              <li>• Input data stays inside the browser</li>
+              <li>• Processing happens locally</li>
+              <li>• No permanent storage occurs</li>
+            </ul>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight text-[#2e295b]">Analytics</h2>
+            <p className="mt-4">
+              We may use analytics tools to understand website usage patterns. These analytics do not include
+              the content users paste into developer tools.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight text-[#2e295b]">Cookies</h2>
+            <p className="mt-4">Basic cookies may be used for site functionality or analytics.</p>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight text-[#2e295b]">User Responsibility</h2>
+            <p className="mt-4">
+              Users should avoid pasting sensitive production secrets, credentials, or private keys into any
+              online tools.
+            </p>
+          </div>
         </div>
       </section>
     </Container>

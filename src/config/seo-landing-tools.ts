@@ -8,6 +8,13 @@ export type SeoLandingTool = {
   howToUse: string[];
   exampleInput: string;
   exampleOutput: string;
+  useCases?: string[];
+  commonMistakes?: string[];
+  limitations?: string[];
+  securityNotes?: string[];
+  examples?: Array<{ title: string; input: string; output: string }>;
+  workflowTips?: string[];
+  relatedGuides?: string[];
   faqs: Array<{ question: string; answer: string }>;
   related: string[];
 };
@@ -28,10 +35,37 @@ export const seoLandingTools: SeoLandingTool[] = [
     ],
     exampleInput: "1719988800",
     exampleOutput: "2024-07-03 00:00:00 UTC",
+    useCases: [
+      "Timestamp conversion is useful when logs, token expirations, and monitoring systems output Unix time that is difficult to interpret at a glance.",
+      "It also helps when you need to convert a human-readable time back into Unix format for tests, cron jobs, APIs, or database fixtures."
+    ],
+    commonMistakes: [
+      "A common mistake is confusing seconds with milliseconds. JavaScript timestamps often use milliseconds, while many APIs store Unix time in seconds.",
+      "Timezone assumptions can also cause confusion if a value is read in local time instead of UTC during debugging."
+    ],
+    limitations: [
+      "Timestamp conversion does not tell you how an upstream system interpreted the value. You still need to confirm timezone and storage conventions in the source application."
+    ],
+    securityNotes: [
+      "Avoid pasting private event payloads or signed tokens if they contain sensitive timestamps tied to production user data."
+    ],
+    examples: [
+      {
+        title: "Convert JWT expiry to UTC",
+        input: "1735689600",
+        output: "2025-01-01 00:00:00 UTC"
+      }
+    ],
+    workflowTips: [
+      "Check whether the source value is in seconds or milliseconds before assuming the conversion output is wrong.",
+      "Keep timezone context next to converted values when comparing application logs, auth tokens, or cron runs.",
+      "When debugging multiple time-related systems, compare raw timestamps and readable dates side by side."
+    ],
+    relatedGuides: ["how-timestamp-converters-work", "converting-unix-timestamps-to-human-dates"],
     faqs: [
-      { question: "Timestamp dùng giây hay milliseconds?", answer: "Nhiều hệ thống dùng giây, nhưng JavaScript thường dùng milliseconds. Bạn nên kiểm tra độ dài số để xác định nhanh." },
-      { question: "Tool dùng UTC hay local time?", answer: "Mặc định nên hiển thị UTC để tránh lệch timezone khi debug nhiều môi trường." },
-      { question: "Khi nào cần convert timestamp?", answer: "Khi đọc log, kiểm tra token expiry, hoặc đối chiếu thời gian giữa frontend và backend." }
+      { question: "What is a Unix timestamp?", answer: "A Unix timestamp is the number of seconds or milliseconds since 1970-01-01 UTC and is commonly used in logs, APIs, and tokens." },
+      { question: "Does this tool support seconds and milliseconds?", answer: "Yes. You should still check the length of the number because many JavaScript systems use milliseconds while backend APIs often use seconds." },
+      { question: "Why use UTC when converting timestamps?", answer: "UTC removes local timezone ambiguity, which makes debugging across environments much easier." }
     ],
     related: ["cron-generator", "jwt-decoder", "json-formatter"]
   },
@@ -50,10 +84,37 @@ export const seoLandingTools: SeoLandingTool[] = [
     ],
     exampleInput: "email=jade@toolpilot.xyz&name=Jade Truong",
     exampleOutput: "email%3Djade%40toolpilot.xyz%26name%3DJade%20Truong",
+    useCases: [
+      "URL encoding is useful when query parameters, redirect URLs, callback state values, or search terms contain spaces or reserved characters.",
+      "Decode mode helps when you receive encoded parameters from logs, browser address bars, or OAuth redirects and need to inspect the original values."
+    ],
+    commonMistakes: [
+      "Mixing URL encoding with Base64 is a common mistake. They solve different problems and are not interchangeable.",
+      "Encoding a full URL multiple times can break redirects because reserved characters become over-escaped."
+    ],
+    limitations: [
+      "This tool helps with standard URL encoding, but some frameworks apply additional form-style rules such as converting spaces to plus signs."
+    ],
+    securityNotes: [
+      "Do not assume encoded query parameters are secure. URL encoding only makes strings safe for transport in a URL context."
+    ],
+    examples: [
+      {
+        title: "Encode callback parameter",
+        input: "redirect=https://www.toolpilot.xyz/contact?ref=docs",
+        output: "redirect%3Dhttps%3A%2F%2Fwww.toolpilot.xyz%2Fcontact%3Fref%3Ddocs"
+      }
+    ],
+    workflowTips: [
+      "Encode only the value that needs transport safety instead of encoding the entire URL blindly.",
+      "If a callback breaks, decode the value again and compare it against the original source string.",
+      "Watch for double-encoding when values pass through multiple layers such as frontend routers and API clients."
+    ],
+    relatedGuides: ["encoding-urls-for-apis", "decoding-urls-in-web-development"],
     faqs: [
-      { question: "Khác gì với Base64 encode?", answer: "URL encode dành cho chuỗi trong URL, còn Base64 là encoding dữ liệu nhị phân/text theo bảng ký tự riêng." },
-      { question: "Khoảng trắng encode thành gì?", answer: "Thường là %20, tùy ngữ cảnh form-url-encoded có thể dùng dấu +." },
-      { question: "Khi nào decode bị lỗi?", answer: "Khi chuỗi không đúng chuẩn percent-encoding hoặc bị cắt giữa chừng." }
+      { question: "What is URL encoding used for?", answer: "It converts reserved characters into a transport-safe format so values can be passed reliably in URLs and query strings." },
+      { question: "How is URL encoding different from Base64?", answer: "URL encoding is for safe URL transport, while Base64 converts data into an ASCII-safe text representation for different protocol needs." },
+      { question: "Why can URL decoding fail?", answer: "Decode can fail when the string contains broken percent-encoding or has been cut off in the middle of an encoded sequence." }
     ],
     related: ["base64-tools", "json-formatter", "jwt-decoder"]
   },
@@ -94,10 +155,37 @@ export const seoLandingTools: SeoLandingTool[] = [
     ],
     exampleInput: "Pattern: /[A-Z]{2}-\\d{4}/g",
     exampleOutput: "Matches: AB-2024, CD-1023",
+    useCases: [
+      "Regex testing is useful for validating form inputs, extracting data from logs, and checking how patterns behave before they are embedded in code or rules engines.",
+      "It also helps when debugging capture groups, alternation, and flags on real sample text instead of guessing from memory."
+    ],
+    commonMistakes: [
+      "Patterns that rely on greedy matching can consume more text than expected and hide the actual bug.",
+      "Expensive backtracking can make seemingly valid regex patterns slow on long input strings."
+    ],
+    limitations: [
+      "Regex behavior can vary between engines, so a pattern tested in JavaScript may still behave differently in another runtime or toolchain."
+    ],
+    securityNotes: [
+      "Avoid pasting sensitive production logs if they contain credentials, tokens, or personal data. Use sanitized samples when testing extraction rules."
+    ],
+    examples: [
+      {
+        title: "Extract order IDs from logs",
+        input: "Pattern: /order-(\\d+)/g\nText: ok order-1024 failed order-2048",
+        output: "Matches: order-1024, order-2048 | Group 1: 1024, 2048"
+      }
+    ],
+    workflowTips: [
+      "Start with a narrow pattern and realistic sample text before adding more complex groups or flags.",
+      "Test edge cases early so a regex that works on ideal input does not fail on real production-like samples.",
+      "If the pattern becomes hard to read, simplify it before embedding it in code or automation rules."
+    ],
+    relatedGuides: ["regex-testing-for-beginners", "common-regex-mistakes-developers-make"],
     faqs: [
-      { question: "Regex flags thường dùng là gì?", answer: "g, i, m, s là các flags phổ biến cho global, case-insensitive, multiline, dotAll." },
-      { question: "Vì sao regex chạy chậm?", answer: "Pattern quá tham lam hoặc có backtracking nặng sẽ làm chậm trên input lớn." },
-      { question: "Tool có hỗ trợ capture groups không?", answer: "Nên hiển thị rõ từng group để debug pattern nhanh hơn." }
+      { question: "What is a regex tester used for?", answer: "A regex tester helps you validate patterns against sample text before using them in validation, parsing, or search workflows." },
+      { question: "Why can regex be slow?", answer: "Patterns with heavy backtracking or overly greedy rules can become slow on large inputs and should be simplified." },
+      { question: "Can this page help debug capture groups?", answer: "Yes. Seeing live matches and capture output makes it easier to confirm whether your groups are behaving as expected." }
     ],
     related: ["json-formatter", "url-encode-decode", "base64-tools"]
   },

@@ -17,6 +17,13 @@ export type ToolDefinition = {
   intro: string;
   howToUse: string[];
   example: ToolExample;
+  useCases?: string[];
+  commonMistakes?: string[];
+  limitations?: string[];
+  securityNotes?: string[];
+  examples?: ToolExample[];
+  workflowTips?: string[];
+  relatedGuides?: string[];
   guideHeading: string;
   guideParagraphs: string[];
   faqs: Array<{ question: string; answer: string }>;
@@ -73,6 +80,41 @@ export const tools: ToolDefinition[] = [
       input: '{"service":"toolpilot","flags":{"seo":true,"a11y":true}}',
       output: '{\n  "service": "toolpilot",\n  "flags": {\n    "seo": true,\n    "a11y": true\n  }\n}'
     },
+    useCases: [
+      "Developers often receive JSON responses from APIs that are compressed into a single line. Formatting the payload makes nested objects, arrays, and flags much easier to scan during debugging.",
+      "This is also useful when cleaning configuration files, webhook payloads, or copied log fragments before sharing them in pull requests, tickets, or docs."
+    ],
+    commonMistakes: [
+      "Missing commas between keys or array items will make the input invalid before formatting can run.",
+      "Unescaped quotation marks inside string values can break parsing and are common when JSON is copied from logs or templates.",
+      "Trailing commas in arrays or objects are accepted by some editors but are invalid in strict JSON parsing flows.",
+      "Duplicate keys may still parse in some environments, but they can create hard-to-spot bugs because later values override earlier ones."
+    ],
+    limitations: [
+      "Very large JSON files can be slower to format in a browser tab because parsing and pretty-printing still happen in the client runtime."
+    ],
+    securityNotes: [
+      "Avoid pasting production secrets, API credentials, session tokens, or private customer payloads into any online tool.",
+      "If you need to inspect sensitive data, prefer using scrubbed test payloads or run an equivalent formatter inside a trusted local environment."
+    ],
+    examples: [
+      {
+        title: "Format user payload for review",
+        input: '{"user":{"id":1,"name":"Alice"}}',
+        output: '{\n  "user": {\n    "id": 1,\n    "name": "Alice"\n  }\n}'
+      }
+    ],
+    workflowTips: [
+      "Format the payload first when you need visual clarity, then validate it if you suspect structural problems.",
+      "When debugging API regressions, compare formatted output against a known-good response instead of scanning raw one-line JSON.",
+      "If you need to share a payload in docs or tickets, remove secrets before formatting and copying the result."
+    ],
+    relatedGuides: [
+      "how-to-format-json-for-api-debugging",
+      "json-formatter-vs-json-validator",
+      "common-json-errors-developers-make",
+      "debugging-apis-using-json-tools"
+    ],
     guideHeading: "How developers use this JSON formatter in real workflows",
     guideParagraphs: [
       "When debugging APIs, teams often receive JSON that is valid but hard to scan quickly. A JSON beautifier improves readability by expanding nested structures into predictable indentation levels. This makes it easier to review field names, compare payload versions, and verify that optional keys are present. For backend and frontend engineers, readability directly reduces time spent chasing data-shape issues during integration work.",
@@ -83,26 +125,26 @@ export const tools: ToolDefinition[] = [
     ],
     faqs: [
       {
+        question: "What is JSON formatting?",
+        answer:
+          "JSON formatting restructures raw JSON text into readable indentation and spacing so humans can inspect nested data more easily."
+      },
+      {
+        question: "Can formatting change the data?",
+        answer:
+          "No. Formatting only changes whitespace and indentation. The underlying keys, values, and structure remain the same if the JSON is valid."
+      },
+      {
         question: "Does this JSON formatter send my data to a server?",
         answer:
           "The MVP implementation processes content in the browser and does not require a database or account."
-      },
-      {
-        question: "What is the difference between a JSON beautifier and JSON validator?",
-        answer:
-          "Beautifying changes whitespace for readability, while validation checks whether syntax is valid JSON."
-      },
-      {
-        question: "When should I use minified JSON?",
-        answer:
-          "Use minified JSON for compact payloads, fixture snapshots, and cases where whitespace should be removed."
       }
     ],
     keywords: ["json formatter", "json beautifier", "json validator"],
     seoTitle: "JSON Formatter Online",
     seoDescription:
       "Free JSON formatter, JSON beautifier, and JSON validator for developers. Format, minify, validate, and copy JSON quickly.",
-    relatedSlugs: ["json-to-csv", "csv-to-json", "yaml-to-json"]
+    relatedSlugs: ["json-validator", "json-diff", "json-to-csv"]
   },
   {
     slug: "base64-tools",
@@ -123,6 +165,37 @@ export const tools: ToolDefinition[] = [
       input: "ToolPilot",
       output: "VG9vbFBpbG90"
     },
+    useCases: [
+      "Base64 encoding is common when APIs, headers, or storage layers need a binary-safe string format that can move through text-only channels.",
+      "Decode mode is useful when inspecting encoded payload fragments from logs, browser storage, or third-party services during integration debugging."
+    ],
+    commonMistakes: [
+      "Treating Base64 as encryption is a common mistake. It only transforms bytes into a text-safe representation and does not protect secrets.",
+      "Invalid padding or stray characters often cause decode errors, especially when encoded data is copied from wrapped logs or partially truncated strings."
+    ],
+    limitations: [
+      "Base64 output is larger than the original text, so it is not a compression technique and can increase payload size."
+    ],
+    securityNotes: [
+      "Do not assume Base64 protects credentials, tokens, or private data. Anyone can decode the result without a key."
+    ],
+    examples: [
+      {
+        title: "Decode Basic auth fragment",
+        input: "dXNlcjpzZWNyZXQ=",
+        output: "user:secret"
+      }
+    ],
+    workflowTips: [
+      "Decode suspicious payload fragments first, then move to JSON or JWT inspection if the result is structured data.",
+      "Check whether the downstream system expects standard Base64 or a URL-safe variant before assuming the output is wrong.",
+      "If encoded values appear in query parameters, compare Base64 usage against normal URL encoding so you do not add unnecessary layers."
+    ],
+    relatedGuides: [
+      "how-base64-encoding-works",
+      "when-not-to-use-base64-encoding",
+      "jwt-decoding-explained"
+    ],
     guideHeading: "When to use a Base64 encoder decoder",
     guideParagraphs: [
       "Base64 encode operations are common when systems require ASCII-safe transport or when binary-like values are represented in text channels. Developers frequently see this pattern in HTTP headers, OAuth integrations, temporary debugging flows, and toolchain outputs. A reliable base64 encode utility helps verify values quickly before they are passed into scripts, APIs, or config variables.",
@@ -173,6 +246,34 @@ export const tools: ToolDefinition[] = [
       input: "count: 1",
       output: "8c0250f1-3f2d-4fcc-90eb-6a4198b3ec8b"
     },
+    useCases: [
+      "Use a UUID generator when you need unique identifiers for fixtures, local seed data, API examples, or QA test entities without waiting for a database to assign IDs.",
+      "Batch UUID generation is especially useful when preparing many records for load tests, migration dry runs, or mock responses."
+    ],
+    commonMistakes: [
+      "Mixing UUID versions across systems can cause confusion when one service expects version-specific behavior or formatting.",
+      "Manually editing UUID strings can introduce invalid characters or missing hyphens that break downstream validators."
+    ],
+    limitations: [
+      "This tool generates UUID v4 values only. It does not create namespaced UUID variants such as v3 or v5."
+    ],
+    securityNotes: [
+      "A UUID is an identifier, not a secret. Do not treat generated values as secure tokens for authentication or authorization."
+    ],
+    examples: [
+      {
+        title: "Generate test IDs in bulk",
+        input: "count: 5",
+        output:
+          "0f9dc40f-3073-4b72-8d15-3645987bd7ea\n3a78e2f5-e1b8-4ec6-b081-b3bb86e7ab82\n9f4a8308-f71f-43aa-b80b-bac71fd6dc2f"
+      }
+    ],
+    workflowTips: [
+      "Generate UUIDs in the same batch size as your seed or fixture workflow so copy-all stays clean and predictable.",
+      "Use generated UUIDs for testing and sample payloads, then document separately when business-specific identifiers are required.",
+      "If you need to inspect related timestamps or payload content, pair generated IDs with Timestamp Converter and JSON tools."
+    ],
+    relatedGuides: ["beginner-guide-to-uuid-generators"],
     guideHeading: "Why a UUID v4 generator matters in development",
     guideParagraphs: [
       "A UUID v4 generator is useful whenever identifiers must be unique without coordinating with a central service. In local development, engineers often need IDs before a database record exists. Generating UUIDs on demand helps build realistic request payloads, integration tests, and contract examples quickly while keeping test data deterministic in structure.",
@@ -220,6 +321,33 @@ export const tools: ToolDefinition[] = [
       input: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0IiwibmFtZSI6IkRldiJ9.signature",
       output: '{\n  "sub": "1234",\n  "name": "Dev"\n}'
     },
+    useCases: [
+      "JWT decoding is useful when authentication fails and you need to inspect claims such as issuer, audience, subject, or expiration timestamps quickly.",
+      "It also helps when comparing tokens from different environments to detect configuration drift across staging, QA, and production."
+    ],
+    commonMistakes: [
+      "Developers often confuse decoding with verification. A decoded token can still be invalid or tampered with if the signature is not checked server-side.",
+      "Reading `exp` without checking timezone or seconds-vs-milliseconds assumptions can lead to wrong conclusions about token expiry."
+    ],
+    limitations: [
+      "This tool does not verify signatures, check certificate chains, or prove that a JWT was issued by a trusted party."
+    ],
+    securityNotes: [
+      "Avoid sharing real production tokens in tickets, chats, or public demos. Decode scrubbed samples whenever possible."
+    ],
+    examples: [
+      {
+        title: "Inspect expiration claim",
+        input: "header.payload.signature",
+        output: '{\n  "sub": "1234",\n  "exp": 1735689600,\n  "role": "admin"\n}'
+      }
+    ],
+    workflowTips: [
+      "Decode a test token first, confirm the expected claims, then verify signatures and trust boundaries in your backend systems.",
+      "Use decoded output to compare staging and production claims when auth behavior differs across environments.",
+      "If you need to inspect token timing, copy the `exp` value into a timestamp converter rather than estimating manually."
+    ],
+    relatedGuides: ["jwt-decoding-explained", "jwt-security-mistakes"],
     guideHeading: "JWT decoding best practices for developers",
     guideParagraphs: [
       "A jwt decoder is most useful when authentication flows fail and you need to inspect token structure quickly. By decoding header and payload, you can check algorithm declarations, issuer claims, audience fields, expiration timestamps, and custom attributes. This visibility helps isolate whether failures are caused by claim content, clock drift, or routing between services.",
@@ -269,6 +397,33 @@ export const tools: ToolDefinition[] = [
       input: "Weekdays + 09:30",
       output: "30 9 * * 1-5"
     },
+    useCases: [
+      "A cron generator is useful when you need to schedule recurring jobs such as cleanup tasks, billing jobs, report generation, or integration polling without hand-writing cron syntax.",
+      "It also helps during runbook creation because teams can confirm schedule intent in plain language before rollout."
+    ],
+    commonMistakes: [
+      "Misplacing fields is common, especially when switching between cron variants that support different numbers of fields.",
+      "Forgetting timezone assumptions can make a valid cron expression run at the wrong business hour in production."
+    ],
+    limitations: [
+      "Generated output uses a standard 5-field cron format and may still need review if your scheduler expects seconds, years, or provider-specific extensions."
+    ],
+    securityNotes: [
+      "Treat generated schedules as configuration helpers. Always review jobs in staging before attaching them to production systems with side effects."
+    ],
+    examples: [
+      {
+        title: "Run every five minutes",
+        input: "Every 5 minutes",
+        output: "*/5 * * * *"
+      }
+    ],
+    workflowTips: [
+      "Generate the expression, then translate it into plain-language expectations before you deploy it to a real scheduler.",
+      "Record timezone assumptions next to the expression so future reviewers do not misread intended run times.",
+      "Test high-impact schedules in staging first, especially when jobs can trigger side effects or external integrations."
+    ],
+    relatedGuides: ["how-cron-expressions-work", "beginner-guide-to-cron-scheduling"],
     guideHeading: "Using a cron expression generator safely",
     guideParagraphs: [
       "A cron generator helps teams avoid syntax mistakes when configuring recurring jobs. Even experienced engineers can misplace fields under time pressure, especially when jumping between environments or scheduler variants. Preset-driven generation reduces human error and speeds up routine automation work for backups, report generation, and queue maintenance.",
@@ -416,6 +571,33 @@ export const tools: ToolDefinition[] = [
       input: "JSON A has version=1, JSON B has version=2 and a new status field",
       output: "CHANGED $.version, ADDED $.status"
     },
+    useCases: [
+      "JSON comparison is useful when two API responses look similar but you need to isolate which fields changed across versions, environments, or releases.",
+      "It also helps when reviewing configuration updates where a small nested difference can cause large downstream behavior changes."
+    ],
+    commonMistakes: [
+      "Comparing unformatted payloads makes it easier to miss subtle nesting differences or array changes.",
+      "Focusing only on one visible field can hide related changes elsewhere in the payload."
+    ],
+    limitations: [
+      "Very large payloads can take longer to compare in the browser, especially when both inputs contain deeply nested arrays and objects."
+    ],
+    securityNotes: [
+      "Use sanitized payloads when possible, especially if the compared responses contain personal data, tokens, or internal identifiers."
+    ],
+    examples: [
+      {
+        title: "Compare API response versions",
+        input: "JSON A has version=1, JSON B has version=2 and a new status field",
+        output: "CHANGED $.version, ADDED $.status"
+      }
+    ],
+    workflowTips: [
+      "Format both payloads before comparison when the source data is dense or copied from logs.",
+      "Use diff output to document regression details in tickets instead of summarizing changes from memory.",
+      "Focus first on changed paths that affect business logic, then review metadata or ordering differences separately."
+    ],
+    relatedGuides: ["debugging-apis-using-json-tools", "comparing-json-responses-during-api-testing"],
     guideHeading: "How JSON diff improves debugging workflows",
     guideParagraphs: [
       "Comparing raw JSON manually is slow when payloads contain nested objects and arrays. A JSON diff utility highlights exact change paths so you can focus on meaningful differences instead of scanning line by line.",
@@ -465,6 +647,39 @@ export const tools: ToolDefinition[] = [
       input: "{\"service\":\"toolpilot\",\"enabled\":true}",
       output: "Valid JSON."
     },
+    useCases: [
+      "Validate JSON before sending request bodies to APIs, saving config files, or storing payloads that would otherwise fail at runtime.",
+      "This is especially useful when data is copied from logs, docs, spreadsheets, or generated from templates that can introduce subtle syntax issues."
+    ],
+    commonMistakes: [
+      "Missing commas between properties are one of the most common JSON validation failures.",
+      "Unescaped double quotes inside string values can break parsing even when the rest of the structure looks correct.",
+      "Trailing commas are allowed in some JavaScript contexts but still fail in strict JSON validation.",
+      "Duplicate keys may parse depending on the parser, but they can hide overwritten values and should be treated as suspicious."
+    ],
+    limitations: [
+      "Large JSON documents can take longer to validate in the browser because parsing still happens on the client device."
+    ],
+    securityNotes: [
+      "Do not paste private production payloads, access tokens, or secrets into online validators unless the data has been scrubbed."
+    ],
+    examples: [
+      {
+        title: "Catch a missing comma",
+        input: "{\"service\":\"toolpilot\" \"enabled\":true}",
+        output: "Unexpected string in JSON at position ..."
+      }
+    ],
+    workflowTips: [
+      "Validate right after copying or editing a payload so syntax issues are caught before the JSON reaches an API client or config file.",
+      "If validation fails on a long input, compare against a known-good sample to isolate where the structure broke.",
+      "Use validation together with formatting when you need both machine correctness and human readability."
+    ],
+    relatedGuides: [
+      "json-formatter-vs-json-validator",
+      "common-json-errors-developers-make",
+      "debugging-apis-using-json-tools"
+    ],
     guideHeading: "Why validate JSON before deployment",
     guideParagraphs: [
       "A JSON validator prevents avoidable runtime errors by catching malformed payloads early. This is useful in API testing, configuration updates, and webhook workflows where one syntax issue can break a pipeline.",
@@ -473,16 +688,18 @@ export const tools: ToolDefinition[] = [
     ],
     faqs: [
       {
+        question: "What does a JSON validator do?",
+        answer:
+          "A JSON validator checks whether the input follows valid JSON syntax so you can catch structural errors before the data reaches production systems."
+      },
+      {
+        question: "Can validation change my data?",
+        answer:
+          "No. Validation only checks whether the JSON can be parsed. It does not alter keys, values, or structure."
+      },
+      {
         question: "Does JSON Validator also format output?",
         answer: "Yes. Valid input can be returned in readable formatted JSON for easier inspection."
-      },
-      {
-        question: "Will invalid JSON show exact parse errors?",
-        answer: "Yes. The tool reports parser errors so you can fix malformed keys, commas, or quotes quickly."
-      },
-      {
-        question: "Is validation done on the server?",
-        answer: "No. Validation runs client-side in your browser."
       }
     ],
     keywords: ["json validator", "validate json online", "json syntax checker"],

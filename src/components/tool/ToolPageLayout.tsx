@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { ToolDefinition, ToolRegistryItem } from "@/config/site";
+import { getBlogPostBySlug } from "@/config/blog";
 import { Container } from "@/components/ui/Container";
 import { ToolIcon } from "@/components/ui/ToolIcon";
 
@@ -83,6 +84,109 @@ export function ToolPageLayout({ tool, children, relatedTools }: ToolPageLayoutP
           </div>
         </section>
 
+        {tool.useCases?.length ? (
+          <section className="mt-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Scenarios</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">
+              When This Tool Is Useful
+            </h2>
+            <div className="mt-5 space-y-4 text-sm leading-8 text-[#666b86]">
+              {tool.useCases.map((item) => (
+                <p key={item}>{item}</p>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {tool.commonMistakes?.length ? (
+          <section className="mt-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Pitfalls</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">Common Mistakes</h2>
+            <ul className="mt-5 space-y-3 text-sm leading-8 text-[#666b86]">
+              {tool.commonMistakes.map((item) => (
+                <li key={item} className="rounded-[20px] border border-white/70 bg-white/85 px-5 py-4">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {tool.limitations?.length ? (
+          <section className="mt-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Boundaries</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">Limitations</h2>
+            <ul className="mt-5 space-y-3 text-sm leading-8 text-[#666b86]">
+              {tool.limitations.map((item) => (
+                <li key={item} className="rounded-[20px] border border-white/70 bg-white/85 px-5 py-4">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {tool.securityNotes?.length ? (
+          <section className="mt-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Safety</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">Security Note</h2>
+            <ul className="mt-5 space-y-3 text-sm leading-8 text-[#666b86]">
+              {tool.securityNotes.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-[20px] border border-[#f7e3b0] bg-[#fff9e9] px-5 py-4 text-[#5f6483]"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {tool.examples?.length ? (
+          <section className="mt-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Examples</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">Practical Examples</h2>
+            <div className="mt-5 space-y-5">
+              {tool.examples.map((example) => (
+                <div key={example.title} className="tp-panel overflow-hidden">
+                  <div className="border-b border-[#f0ebff] px-5 py-4">
+                    <p className="text-sm font-medium text-[#3f4373]">{example.title}</p>
+                  </div>
+                  <div className="grid gap-0 divide-y divide-[#f0ebff] md:grid-cols-2 md:divide-x md:divide-y-0">
+                    <div className="px-5 py-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#8b8faa]">Input</p>
+                      <pre className="mt-3 whitespace-pre-wrap text-xs leading-6 text-[#5f6483]">
+                        {example.input}
+                      </pre>
+                    </div>
+                    <div className="px-5 py-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#8b8faa]">Output</p>
+                      <pre className="mt-3 whitespace-pre-wrap text-xs leading-6 text-[#5f6483]">
+                        {example.output}
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {tool.workflowTips?.length ? (
+          <section className="mt-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Tips</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">Workflow Tips</h2>
+            <ul className="mt-5 space-y-3 text-sm leading-8 text-[#666b86]">
+              {tool.workflowTips.map((item) => (
+                <li key={item} className="rounded-[20px] border border-white/70 bg-white/85 px-5 py-4">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
         <section className="mt-14">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Answers</p>
           <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">FAQ</h2>
@@ -116,6 +220,27 @@ export function ToolPageLayout({ tool, children, relatedTools }: ToolPageLayoutP
             ))}
           </div>
         </section>
+
+        {tool.relatedGuides?.length ? (
+          <section className="mt-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#9a8fd1]">Read next</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#2e295b]">Related Guides</h2>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {tool.relatedGuides
+                .map((slug) => getBlogPostBySlug(slug))
+                .filter((post): post is NonNullable<typeof post> => Boolean(post))
+                .map((post) => (
+                  <Link
+                    key={post.slug}
+                    href={`/blog/${post.slug}`}
+                    className="rounded-[22px] border border-white/70 bg-white/85 px-5 py-4 text-sm font-medium text-[#555a7a] shadow-[0_16px_48px_rgba(79,61,154,0.06)] transition duration-200 hover:-translate-y-0.5 hover:border-[#dccfff] hover:text-[#4f3d9a]"
+                  >
+                    {post.title}
+                  </Link>
+                ))}
+            </div>
+          </section>
+        ) : null}
       </article>
     </Container>
   );
