@@ -20,6 +20,16 @@ const nextConfig: NextConfig = {
         permanent: true
       },
       {
+        source: "/blog/json-debug-for-developers",
+        destination: "/blog/json-debug-online",
+        permanent: true
+      },
+      {
+        source: "/blog/regex-online-for-developers",
+        destination: "/blog/regex-online-tester",
+        permanent: true
+      },
+      {
         source: "/:path*",
         has: [
           {
