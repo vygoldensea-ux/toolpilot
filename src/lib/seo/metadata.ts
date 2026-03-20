@@ -20,10 +20,13 @@ export function buildMetadata({
   keywords = []
 }: BuildMetadataInput): Metadata {
   const canonical = toCanonical(path);
-  const fullTitle = `${title} | ${siteConfig.name}`;
+  const normalizedTitle = title.replace(new RegExp(`\\s*\\|\\s*${siteConfig.name}$`), "").trim();
+  const fullTitle = normalizedTitle === siteConfig.name ? siteConfig.name : `${normalizedTitle} | ${siteConfig.name}`;
 
   return {
-    title: fullTitle,
+    title: {
+      absolute: fullTitle
+    },
     description,
     keywords,
     metadataBase: new URL(siteConfig.baseUrl),
