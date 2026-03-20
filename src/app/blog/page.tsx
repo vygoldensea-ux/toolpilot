@@ -17,24 +17,23 @@ export default function BlogIndexPage() {
       <section className="py-16 sm:py-24">
         <h1 className="text-4xl font-semibold tracking-tight text-[#2e295b] sm:text-5xl">Developer Guides</h1>
         <p className="mt-5 max-w-3xl text-base leading-8 text-[#666b86]">
-          ToolPilot publishes practical technical guides that complement its browser-based tools. These articles focus
-          on developer workflows involving JSON, encoding, regular expressions, timestamps, tokens, cron schedules, and
-          API debugging.
+          ToolPilot publishes practical developer guides designed to make browser-based utilities more useful in real
+          workflows. Instead of listing tools without context, the blog explains when to use them, what mistakes to
+          avoid, and how they fit into common debugging and data transformation tasks. These guides are written for
+          developers, QA engineers, DevOps teams, API testers, and technical users who need quick answers while working
+          with structured data.
         </p>
         <p className="mt-4 max-w-3xl text-sm leading-8 text-[#666b86]">
-          Start with a guide, then jump directly into the relevant utilities such as{" "}
-          <Link href="/json-formatter" className="text-brand-700 hover:text-brand-800">
-            JSON Formatter
-          </Link>
-          ,{" "}
-          <Link href="/json-validator" className="text-brand-700 hover:text-brand-800">
-            JSON Validator
-          </Link>
-          , and{" "}
-          <Link href="/regex-tester" className="text-brand-700 hover:text-brand-800">
-            Regex Tester
-          </Link>
-          .
+          The guides cover topics such as JSON formatting and validation, Base64 encoding, regex testing, timestamp
+          conversion, JWT decoding, cron expressions, URL encoding, and API debugging workflows. Each article is
+          intended to connect directly to relevant ToolPilot utilities so users can move from explanation to action
+          without unnecessary friction.
+        </p>
+        <p className="mt-4 max-w-3xl text-sm leading-8 text-[#666b86]">
+          In practice, that means a guide should help you decide whether you need formatting, validation, comparison,
+          decoding, or schedule inspection before you open a tool. The blog exists to make those decisions easier. It
+          complements the utilities by adding workflow context, debugging patterns, limitations, and common mistakes
+          that are hard to express on a compact tool page alone.
         </p>
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {blogPosts.map((post) => (

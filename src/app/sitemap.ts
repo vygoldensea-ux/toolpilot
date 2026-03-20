@@ -1,34 +1,57 @@
 import type { MetadataRoute } from "next";
-import { allBlogSlugs } from "@/config/blog";
-import { guides } from "@/config/guides";
+import { blogPosts } from "@/config/blog";
 import { liveToolRegistry, siteConfig } from "@/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = [
-    "/",
+  const homepageRoute = ["/"];
+  const trustRoutes = [
     "/about",
     "/contact",
     "/privacy-policy",
-    "/privacy",
     "/terms",
     "/disclaimer",
-    "/sitemap",
     "/site-faq",
     "/changelog",
     "/editorial-standards",
-    "/how-toolpilot-works",
-    "/guides",
-    "/blog"
+    "/how-toolpilot-works"
   ];
+  const utilityRoutes = ["/sitemap"];
+  const editorialRoutes = ["/blog"];
   const toolRoutes = liveToolRegistry.map((tool) => `/${tool.slug}`);
-  const guideRoutes = guides.map((guide) => `/guides/${guide.slug}`);
-  const blogRoutes = allBlogSlugs.map((slug) => `/blog/${slug}`);
-  const routes = Array.from(new Set([...staticRoutes, ...toolRoutes, ...guideRoutes, ...blogRoutes]));
+  const blogRoutes = blogPosts.map((post) => `/blog/${post.slug}`);
+  const routes = Array.from(
+    new Set([...homepageRoute, ...trustRoutes, ...utilityRoutes, ...editorialRoutes, ...toolRoutes, ...blogRoutes])
+  );
 
-  return routes.map((route) => ({
-    url: new URL(route, siteConfig.baseUrl).toString(),
-    lastModified: new Date(),
-    changeFrequency: "weekly",
-    priority: route === "/" ? 1 : 0.8
-  }));
+  return routes.map((route) => {
+    let changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] = "monthly";
+    let priority = 0.8;
+
+    if (route === "/") {
+      changeFrequency = "weekly";
+      priority = 1;
+    } else if (toolRoutes.includes(route)) {
+      changeFrequency = "monthly";
+      priority = 0.9;
+    } else if (route === "/blog") {
+      changeFrequency = "weekly";
+      priority = 0.8;
+    } else if (blogRoutes.includes(route)) {
+      changeFrequency = "monthly";
+      priority = 0.7;
+    } else if (trustRoutes.includes(route)) {
+      changeFrequency = "yearly";
+      priority = 0.5;
+    } else if (route === "/sitemap") {
+      changeFrequency = "monthly";
+      priority = 0.4;
+    }
+
+    return {
+      url: new URL(route, siteConfig.baseUrl).toString(),
+      lastModified: new Date(),
+      changeFrequency,
+      priority
+    };
+  });
 }
